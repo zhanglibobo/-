@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js定义</title>
+</head>
+  权限可以在meta标签里区分
+<body>
+  <!-- 
+      append(),在父级最后追加一个子元素 可以是多个
+      appendTo(),将子元素追加到父级的最后
+      prepend(),在父级最前面追加一个子元素
+      prependTo(),将子元素追加到父级的最前面
+      after(),在当前元素之后追加（是同级关系）
+      before(),在当前元素之前追加（是同级关系）
+      insertAfter(),将元素追加到指定对象的后面（是同级关系）
+      insertBefore(),将元素追加到指定对象的前面（是同级关系）
+      appendChild(),在节点的最后追加子元素 只能一个 (常用)
+    -->
+  <!-- 
+     使用nodeType属性返回值可以判断一个节点的类型
+     dom.nodeType == 1 节点类型是element
+     2 attr / 3 text
+     document.createElement('a').setAttribute('href','www')
+  -->
+  <script>
+    // h5c3
+    // 在进行算数运算时，+数字隐式转换成字符串。其余的运算符号字符串隐式转换成数字。
+    /** --------------js中原始数据类型 */
+    //  简单类型（值类型 栈stack）: Number,String,Boolean,Undefined,Null,Symbol
+    //  复杂类型（引用类型 堆heap）:Object
+    //  基本包装类型：Number，String，Boolean
+    // -----------undefined和null
+    // undefined定义了未赋值，null定义了赋值为null
+    // 什么时候赋值为null:初始赋值，表明要赋值为对象/让对象成为垃圾对象（被垃圾回收器回收）
+    // -----------装箱和拆箱
+    // 装箱: 把基本数据类型转化为对应的引用数据类型的操作
+    // 例如 str = 'abc' 调用str.indexof(‘a’)
+    // 1. 创建String类型的一个实例
+    // 2. 在实例上调用指定的方法
+    // 3. 销毁这个实例
+    // 拆箱： 将引用类型对象转换为对应的值类型对象
+    // valueOf() 或者toString()
+    // let str = new String('aaa')
+    // str.valueOf() / str.toString()
+    /** --------------类型判断 */
+    // --------- == 和 ===
+    // 等于 进行强制类型转换，
+    // 1.字符串和数字，字符串和布尔比较时，转成数字
+    // 2.比较其中一个是对象时，会调用对象的valueof()方法，没有则调用toString()
+    // > < 小于大于比较
+    // 1. 数组/对象比较大小时，转换成字符串，然后比较charCodeAt()（比较字符在编码表中的数值大小）
+    // 2. <= 则比较 >   >= 则比较 <
+    // null == undefined
+    // 全等于 遵循上述规则，除此之外还进行类型比较
+    // let a = [1, 2, 3]
+    // let b = [1, 2, 3]
+    // console.log(a == b) //false
+    // let a = []
+    // let b = []
+    // console.log(a == b)//false
+    // ---------基本数据类型 typeof
+    // console.log(typeof null)//'object'
+    // console.log(typeof fn)//'function'
+    // var arr = [1, 2, 3];
+    // console.log(Object.prototype.toString.call(null));//"[object Null]"//null就是null类型
+    // ---------判断数组或对象
+    // 1. Array.isArray(arr) //true
+    // 2. arr instanceof Array; //true      ——obj instanceof Object //数组也为true
+    // 3. arr.constructor === Array; //true ——obj.constructor === Object
+    // 4. Object.prototype.toString.call(arr) ==='[object Array]'; //true                         
+    //                                            [object Function]是否是函数     
+    //                                            [object Object]是否是对象
+    // ----------instanceof construtor 区别
+    // instanceof运算符用于检验构造函数的prototype属性是否出现在对象的原型链中的任何位置，
+    //           返回一个布尔值。(是不是某一个类的示例). //对象 instanceof 构造函数  
+    // constructor是对象的一个属性， 不是运算符， constructor属性指向对象的构造函数。
+    // instanceof 原理
+    // function is(l, r) {
+    //   const prototype = r.prototype;
+    //   let __proto__ = l.__proto__;
+    //   while(true){
+    //     if(__proto__ ===null){
+    //       return false
+    //     }
+    //     if(__proto__ === prototype){
+    //       return true
+    //     }
+    //     __proto__ = __proto__.__proto__
+    //   }
+    // }
+    // function Animal() {
+    //   this.name = '111'
+    // }
+    // function fn(){}
+    // let a = new Animal();
+    // console.log(is(a, Animal))
+
+    // ---------判断是否为整数
+    // Number.isInterger()
+    // num%1 === 0
+    // Math.floor(num) === num
+    // parseInt(num, 10) === num
+    // (num | 0) === num
+
+
+    /** ---------------字符串方法 */
+    // slice(start,end)
+    // substring(start,end)
+    // substr(start,length)
+    // str.repeat(2) 返回str重复次数 strstr
+    // match
+    // search
+
+
+    /** ---------------数组方法 */
+    // push() 在数组的末端添加一个或多个,返回添加的元素
+    // pop()  删除最后一个元素，返回删除的元素
+    // unshift() 在数组的前端添加一个或多个，返回添加的元素
+    // shift()  删除第一个元素，返回删除的元素
+    // splice(index,how many,item1,item2...itemx) index可以为负数，从尾部开始，改变原数组
+    // forEach改变原数组
+    // sort arr.sort((a,b)=>a-b)升序
+    // arr.reverse() 改变原数组
+    // slice(start,end); 不包含end元素，返回新数组
+    // map创建新数组
+    // reduce   reduce(('累积器',cur,index,arr)=>{}, initialValue)
+    // filter  返回过滤出的数组
+    // concat let c = a.concat(b)
+    // indexOf 是否有某个元素
+    // arr.includes('a') //true,false
+    // join 数组变字符串
+    // ----------------es6新增
+    // 1、Array方法新增 Array.from() Array.of()
+    // 2、数组实例的 ：
+    //    copywith()
+    //    find() findIndex()
+    //    fill()
+    //    entries()  keys() values() //for (let [index, elem] of ['a', 'b'].entries()) {console.log(index, elem);}
+    //    includes()
+    //    flat() flatMap()
+
+
+    /** ---------------对象 */
+    // ---------new 做了什么
+    // 1、创建了一个空的js对象（即{}）
+    // 2、将空对象的原型_proto_指向构造函数的原型prototype
+    // 3、将空对象作为构造函数的上下文（改变this指向）
+    // 4、返回新对象
+    // 原型 ：(是一个属性也是一个对象)1.解决数据共享，节省空间 2.继承 
+    // 构造函数和实例对象之间的关系,叫原型链,这个原型链是通过原型来联系的
+    // 访问一个对象的属性时，现在自身属性中查找，找到则返回；如果没有，再沿着__proto__这条链上查找，找到则返回；最终没找到返回undefined
+    // ------------原型：
+    // 我们所创建的每个函数， 解析器都会向函数中添加一个prototype属性，这个属性对应一个对象， 这个对象就是所谓的原型对象
+    // 如果函数作为普通函数调用， prototype没有任何作用
+    // 当函数以构造函数调用时， 它所创建的对象中都会有一个隐含的属性__proto__，指向该构造函数的原型对象prototype
+    // 原型对象就相当于一个公共区域，所有同一个类的实例都可以访问到这个原型对象，
+    // 我们可以将对象中共有的内容，统一设置到原型对象中，当我们访问对象的一个属性或方法时，它会先在对象的自身中寻找，如果有则直接使用，如果没有则会去原型对象中寻找，如果找到则使用。
+    //  以后我们创建构造函数时，可以将这些对象共有的属性和方法统一添加到构造函数的原型对象中，这样就不用分别为每个对象添加，也不会影响到全局作用域，就可以使每个对象具有这些属性和方法了。
+    // -----------原型链：
+    // 1、prototype和__proto__指向相同
+    // 给原型对象添加属性（一般是方法）
+    // 作用：函数的所有实例对象自动拥有原型中的属性或方法
+    // 2、Object.prototype__proto__ 为null (Object的原型对象是原型链的尽头）
+    // 函数prototype属性
+    // 每个函数都有一个prototype属性，它默认指向一个Object空对象（即为原型对象）
+    // 有__proto__属性，指向Object.prototype, Object.prototype__proto__ 为null
+    // 3、 Function.__proto__ === Function.prototype
+    // 4、 Object.__proto__ === Function.prototype
+    // Object.prototype === Function.prototype.__proto__
+    // Object.prototype === Object.__proto__.__proto__
+    // 5、 constructor
+    // fn.__proto__ === Function.prototype = {
+    //   constructor: Fn() {}, //Fn构造函数
+    //   __proto__: {}, //  指向Object.prototype
+    //   其他属性和方法
+    // }
+    // 6、所有函数都有prototype 和 __proto__
+    //  (函数的__proto__都等于Function.prototype，所有函数都是Function的实例)
+    //     Object instanceof Function
+    //     Object instanceof Object
+    //     Function instanceof Function
+    //     Function instanceof Object
+    // Object.__proto__ === Function.prototype
+    // Object.__proto__ === Function.prototype
+    //                                        =>Function.prototype.__proto__===Object.prototype
+    // Function.__proto__ === Function.prototype
+    // Function.__proto__ === Function.prototype
+    //                                        =>Function.prototype.__proto__===Object.prototype
+
+    /** ---------------创建对象的方式  【img-创建对象的方式】*/
+    // 1、Object构造函数模式
+    // 方法：先创建Object对象，再动态添加属性/方法
+    // 使用场景：其实时不确定对象内部的数据
+    // 缺点：语句较多
+    // 2、对象字面量
+    // 方法：使用{},同时指定属性/方法
+    // 使用场景：起始时对象内部数据是确定的
+    // 缺点：如果创建多个对象，有重复代码
+    // 3、工厂模式   (工厂函数：返回一个对象的函数)
+    // 方法：通过工厂函数动态创建对象并返回obj 
+    // 使用场景：需要创建多个对象时
+    // 缺点：对象没有一个具体的类型，都是Object类型
+    // 4、自定义构造函数模式
+    // 方法：自定义构造函数，通过new 创建对象
+    // 使用场景：需要创建多个类型确定的对象
+    // 缺点：每个对象都有相同的数据，浪费内存
+    // 5、构造函数 + 原型的组合模式
+    // 方法：自定义构造函数，属性在函数中初始化，方法添加到原型上
+    // 使用场景：需要创建多个类型确定的对象
+
+
+    /** ---------------函数 */
+    // 函数每次执行都会在栈空间中创建新的变量，执行多次，返回的内存地址不同，变量名是内存地址
+    // 函数调用=》压入函数栈（保存函数调用过程中所有变量）
+    // 函数调用结束=》弹出函数栈（释放所有变量）
+    // ------------this
+    // 任何函数本质上都是通过某个对象来调用的，如果没有直接指定，就是window
+    // 所有函数内部都有一个变量this
+    // 它的值是调用函数的当前对象
+    // ------------确定this的值
+    // test() //window
+    // p.test() // p
+    // new test() //新创建的对象
+    // p.call(obj) //obj
+    // ------------改变this指向
+    // 1、call
+    // function fn(a,b){
+    //   console.log(this,a,b)
+    //   console.log(this.name)
+    // }
+    // let obj={name:'zhang',age:18}
+    // fn.call(obj,666,999)
+    // 2、apply
+    //  fn.apply(obj,[666,999])
+    // let arr=[1,2,3,4,5,6]
+    // let re=Math.max.apply(null,arr)
+    // let re2=Math.max(...arr)
+    // 3、bind （用于既想要改变this指向，又不希望立刻执行函数）
+    // fn.bind(obj,666,999)();//因为调用bind后返回的是个函数，要想执行需要加()调用
+    // ----IIFE 立即执行函数 匿名函数自调用
+    // (function(){})()
+
+
+    /** ----------------继承 【img - 图5_继承 】*/
+    // 继承的时候只需要把子类的原型对象prototype里的__proto__属性指向父类的prototype即可
+    // 继承：
+    // -------1.原型链继承---问题：属性一样
+    // function Person(name, age) {
+    //   this.name = name;
+    //   this.age = age;
+    // }
+    // Person.prototype.sayHi = function () {
+    //   console.log("sayHi方法")
+    // }
+
+    // function Student(score) {
+    //   this.score = score;
+    // }
+    // Student.prototype = new Person("小明", 15);
+    // Student.prototype.play = function () {
+    //   console.log("play的方法");
+    // }
+    // var stu1 = new Student(100);
+    // var stu2 = new Student(100);
+    // console.log(stu1);
+    // stu2.name = "小芳";
+    // console.log(stu2);
+    // --------2.构造函数继承--问题：不能继承方法
+    // function Person(name, age) {
+    //   this.name = name;
+    //   this.age = age;
+    // }
+    // Person.prototype.sayHi = function () {
+    //   console.log("sayHi方法")
+    // }
+
+    // function Student(name, age, score) {
+    //   Person.call(this, name, age)
+    //   this.score = score;
+    // }
+    // Student.prototype.play = function () {
+    //   console.log("play的方法");
+    // }
+    // var stu = new Student("小明", 16, 99);
+    // var stu2 = new Student("小芳", 17, 98);
+
+    // console.log(stu);
+    // console.log(stu2);
+    // --------3.组合继承 借用构造函数继承属性，用改变原型指向 继承方法
+    // function Person(name, age) {
+    //   this.name = name;
+    //   this.age = age;
+    // }
+    // Person.prototype.sayHi = function () {
+    //   console.log("sayHi方法")
+    // }
+
+    // function Student(name, age, score) {
+    //   Person.apply(this, [name, age]); //为了得到属性
+    //   this.score = score;
+    // }
+    // Student.prototype = new Person();//看到父类型的方法
+    // Student.prototype.constructor = Student; //修正constructor属性，让子类型的原型的constructor指向子类型 （修正constructor之前，这个属性在Person.prototype中）
+    // Student.prototype.play = function () {
+    //   console.log("play的方法");
+    // }
+    // var stu = new Student("小明", 13, 99);
+    // var stu2 = new Student("小芳", 14, 100);
+    // console.log(stu);
+    // console.log(stu2);
+    // ----------4.拷贝继承 把父级中的属性和方法复制给子级的实例对象
+    // function Person(name, age) {
+    //   this.name = name;
+    //   this.age = age;
+    // }
+    // Person.prototype.sex = "女";
+    // Person.prototype.sayHi = function () {
+    //   console.log("sayHi方法")
+    // }
+    // function Student(score) {
+    //   this.score = score;
+    // }
+    // var stu = new Student(100);
+    // for(var key in Person.prototype){
+    //   stu[key] = Person.prototype[key];
+    // }
+    // console.log(stu);
+    // ------简化版拷贝继承--
+    // var obj = {
+    //   name:"小明",
+    //   age:18,
+    //   run:function(){
+    //     console.log("run的方法")
+    //   }
+    // }
+    // var obj2={};
+    // for(var key in obj){
+    //   obj2[key] = obj[key];
+    // }
+    // console.log(obj2);
+    // for(var key in obj2){
+    //   if(key == "run"){
+    //     obj2[key]();
+    //   }else{
+    //     console.log(obj2[key]);
+    //   }
+    // }
+
+
+    /* --------------闭包 */
+    // 如何产生闭包：当一个嵌套的内部(子)函数引用了嵌套的外部(父)函数的变量时，就产生了闭包
+    // 闭包到底是什么？（闭包存在于嵌套的内部函数中）
+    // 理解一：闭包是嵌套的内部函数
+    // 理解二：包含被引用变量（函数）的对象
+    // 产生闭包的条件：1.函数嵌套 2.内部函数引用了外部函数的数据（变量/函数）
+    // 闭包的作用:缓存数据---是优点也是缺点 （闭包解决块级作用域，因为函数是一个作用域）
+    // 1.使用函数内部的变量在函数执行完后，仍然存活在内存中（延长了局部变量的生命周期）
+    // 2.让函数外部可以操作（读写）到内部函数的数据（变量/函数）
+    // 常见的闭包：
+    // 1.将函数作为另一个函数的返回值
+    // 2.将函数作为实参传递给另一个函数调用
+    // 闭包的应用： 定义js模块
+    // * 具有特定功能的js文件
+    // * 将所有的数据和功能都封装在一个函数内部（私有的）
+    // * 只向外暴露一个包含n个方法的对象或函数
+    // * 模块的使用者，只需要通过模块暴露的对象调用方法来实现对应的功能
+    // 问题：
+    // 1.函数执行完成后，函数内部声明的局部变量是否还存在？//一般是不存在，存在于闭包中的变量才可能存在
+    // 2.在函数外部能直接访问函数内部的局部变量嘛？ //不能，我们可以通过闭包让外部操作它
+    // 闭包的生命周期：
+    // 产生：在嵌套的内部函数定义执行完成时就产生了（不是在调用）
+    // 死亡：在嵌套的内部函数成为垃圾对象时
+    // function fn1(){
+    //   // 此时闭包就已经产生了（函数提升，内部函数对象已经创建了）
+    //   var a = 2;
+    //   function fn2(){
+    //     a++
+    //     console.log(a);
+    //   }
+    //   return fn2
+    // }
+    // var f = fn1();
+    // f();//3
+    // f();//4
+    // f = null;//闭包死亡（包含闭包的函数对象成为垃圾对象）
+    // 闭包的缺点：
+    // 1.函数执行完后，函数内的局部变量没有释放，占用内存事件会变长，容易造成内存泄漏
+    // 2.解决：及时释放
+    // 产生新的闭包：外部函数再调用，并有变量接收
+
+    /* ------------------递归 */
+    // 递归：在函数A中调用函数A自己,就是递归,但是递归要有结束的条件
+
+    /* 11.浅拷贝 ----深拷贝 */
+    // -----1.浅拷贝：把一个对象中的地址拷贝到另一个对象中，指向相同，属性和方法都是一起拷贝过去的
+    // -----2.深拷贝：把一个对象中的属性和方法依次的 一个一个的复制到另一个对象中
+    // function extend(a, b) { //把对象a复制到对象b中-----递归
+    //   for (var key in a) {
+    //     var item = a[key];
+    //     if (item instanceof Array) {
+    //       b[key] = [];
+    //       extend(item, b[key]);
+    //     } else if (item instanceof Object) {
+    //       b[key] = {};
+    //       extend(item, b[key]);
+    //     } else {
+    //       b[key] = item
+    //     }
+    //   }
+    // }
+
+    /*-------------------- 垃圾回收机制 （来处理程序运行中产生的垃圾） */
+    /* 垃圾 */
+    //（1）没有被引用的对象或变量
+    //（2）无法访问到的对象（几个对象引用形成一个环，互相引用）
+
+    // 垃圾回收机制（GC：Garbage Collection）：间歇的不定期的寻找到不再使用的变量，并释放掉它们所指向的内存。
+    //  JS的垃圾回收机制是为了以防内存泄漏，内存泄漏的含义就是当已经不需要某块内存时这块内存还存在着，没有被释放，导致该内存无法被使用，
+    // 垃圾回收方式：标记清除、引用计数（ie低版本）
+    // 标记清除：
+    //     当变量进入执行环境时（函数中声明变量），就标记这个变量为“进入环境”，当变量离开环境时（函数执行结束），
+    //     则将其标记为“离开环境”，离开环境之后还有的变量则是需要被删除的变量。（被标记的变量进行销毁和回收）
+    // 引用计数：
+    //     跟踪记录每个值被引用的次数，当这个值的引用次数为0时，下次垃圾回收时会把这个值进行回收。
+
+    /*-------------------- 内存溢出与内存泄漏 */
+    // 内存溢出：
+    // 1.一种程序运行出现的错误，当程序运行需要的内存超过了剩余的内存时，就会抛出内存溢出的错误
+    // 内存泄漏：
+    // 1.占用的内存没有及时释放
+    // 2.内存泄漏积累多了就容易导致内存溢出
+    // 3.常见的内存泄漏：1）意外的全局变量 2）没有及时清理的计时器或回调函数 3）闭包
+
+    /* -----------------变量提升与函数提升 */
+    // 【先执行变量提升，再执行函数提升】
+    //  * 变量提升：通过var定义的变量，在定义语句前就可以访问到。值是undefined
+    //  * 函数提升：通过function声明的函数，在之前就可以直接调用
+    // 变量提升和函数提升是如何产生的：
+    // 1、在js中js引擎会优先解析var变量和function定义！在预解析完成后从上到下逐步进行！
+    // 2、解析var变量时，会把值存储在“执行环境”中，而不会去赋值，值是存储作用！
+    // 3、在解析function时会把函数整体定义，这也就解释了为什么在function定义函数时为什么可以先调用后声明了！其实表面上看是先调用了，其实在内部机制中第一步实行的是把以function方式定义的函数先声明了（预处理）
+    //  * 预解析
+    //  变量的声明提前,赋值不会提前
+    //  调用这个函数的时候,会把该函数的定义提前
+
+    /* -----------------执行上下文合和执行栈 */
+    // 全局执行上下文：
+    //     * 在执行全局代码前将window确定为全局执行上下文
+    //     * 对全局数据进行预处理
+    //     * var定义的全局变量==》undefined,添加为window的属性
+    //     * function声明的全局函数==》赋值fun,添加为window的属性
+    //     再开始执行全局代码
+    // 函数执行上下文：
+    //     * 在调用函数，准备执行函数体之前，创建对应的函数执行上下文对象（栈中的一块区域）
+    //     * 对局部数据进行预处理
+    //     * 形参变量=》赋值（实参）==》添加为执行上下文的属性
+    //     * arguments==》赋值（实参列表），添加为执行上下文的属性
+    //     * var 定义的局部变量==》undefined, 添加为执行上下文的属性
+    //     * function 声明的函数==》赋值（fun）,添加为执行上下文的方法
+    //     * this ==》 赋值（调用函数的对象）
+    //     再开始执行函数体代码
+    // 执行栈:
+    //     * 1.在全局代码执行前，js引擎就会创建一个栈来存储管理所有的执行上下文对象
+    //     * 2.在全局执行上下文（window）确定后，将其添加到栈中（压栈）【图3-压栈】
+    //     * 3.在函数执行上下文创建后，将其添加到栈中（压栈）  （局部变量放入栈中）
+    //     * 4.在当前函数执行完后，将栈顶的对象移除（出栈）
+    //     * 5.当所有的代码执行完后，栈中只剩下window
+    //  创建几个执行上下文对象：（**调用函数次数 + window**）
+
+
+    /** ----------------作用域与作用域链 */
+    // 作用域：是一块‘地盘’，一个代码段所在的区域，是静态的（相对于执行上下文对象），在编写代码时就确定了
+    // 分类：全局作用域、函数作用域、（块级作用域）
+    // 作用：隔离变量，不同作用域下同名变量不会有冲突
+    // 作用域与执行上下文的区别：
+    //   1、全局作用域之外，每个函数都会创建自己的作用域（**函数定义次数 + window**）,
+    //     作用域在函数定义时就已经确定了，而不是在函数调用时。
+    //     全局执行上下文环境是在全局作用域确定之后，js代码马上执行之前创建
+    //     函数执行上下文环境是在调用函数时，函数体代码执行前创建
+    //   2、作用域是静态的，只要函数定义好了就一直存在，且不会在变化
+    //      执行上下文是动态的，调用函数时创建，函数调用结束时就会自动释放
+    // 联系：
+    //    执行上下文对象是从属于所在的作用域
+    //    全局上下文环境==》全局作用域
+    //    函数执行上下文环境==》对应的函数作用域
+
+
+    //   作用域链定义：多个上下关系的作用域形成的链，它的方向是从下向上的（从内到外）
+    //              嵌套的作用域产生的由内向外的过程就是作用域链。
+    //              查找变量时就是沿着作用域链来查找的。
+    //  * 作用域链:全局变量的作用域链在0级,在一个函数中的作用域链在1级
+    //  （在函数内部使用变量,首先在自己的函数中搜索,如果没有,就去上一级作用域链中搜索）
+    // 查找一个变量的查找规则：
+    //  1.在当前作用域下的执行上下文中查找对应的属性，如果有直接返回，如果没有则2
+    //  2.在上一级作用域的执行上下文中查找对应的属性，如果有则直接返回，否则3
+    //  3.再次执行2的相同操作，直到全局作用域，如果还找不到就抛出找不到的异常
+
+    /* -------------------防抖和节流 debounce throttle  */
+    // 为了限制函数的执行频次， 以优化函数触发频率过高导致的响应速度跟不上触发频率， 出现延迟， 假死或卡顿的现象。
+    // 区别： 防抖是将多次执行变为最后一次执行， 节流是将多次执行变成每隔一段时间执行，节流会稀释函数的执行频率。
+    // 1.非立即执行版
+    /* function debounce(func, wait) {
+      let t;
+      return function () {
+        let context = this;
+        let args = arguments;
+        if (t) clearTimeout(t);
+        t = setTimeout(() => {
+          func.apply(context, args)// this 指向不变以及依旧能接受到 e 参数
+        }, wait);
+      }
+    }
+  */
+    // 2.立即执行版
+    /* function debounce(func, wait) {
+      let t;
+      return function () {
+        let context = this;
+        let args = arguments;
+        if (t) clearTimeout(t);
+        let callnow = !t;
+        t = setTimeout(() => {
+          t = null;
+        }, wait);
+        if (callnow) {
+          func.apply(context, args)
+        }
+      }
+    } */
+
+    /**
+     * 3. @param immediate true 表立即执行，false 表非立即执行
+     */
+    /* function debounce(func, wait, immediate) {
+      let t;
+      return function () {
+        let context = this;
+        let args = arguments;
+        if (t) clearTimeout(t);
+        if (immediate) {
+          let callnow = !t;
+          t = setTimeout(() => {
+            t = null;
+          }, wait);
+          if (callnow) {
+            func.apply(context, args)
+          }
+        } else {
+          t = setTimeout(() => {
+            func.apply(context, args)
+          }, wait);
+        }
+      }
+    }*/
+
+    // 节流
+    /* 1.时间戳版
+    function throttle(func, wait) {
+      let previous = 0;
+      return function () {
+        let context = this;
+        let args = arguments;
+        let now = new Date().getTime();
+        if (now - previous > wait) {
+          func.apply(context, args);
+          previous = now;
+        }
+      }
+    }*/
+    // 2.定时器版
+    /*function throttle(func, wait) {
+      let t;
+      return function () {
+        let context = this;
+        let args = arguments;
+        if (!t) {
+          t = setTimeout(function () {
+            t = null
+            func.apply(context, args);
+          }, wait)
+        }
+      }
+    }*/
+    /*function fn() {
+      console.log('测试 ' + Math.random())
+    }
+    window.addEventListener('scroll', throttle(fn, 500, true))*/
+
+
+    /** ----------------浏览器渲染原理 */
+    // 1、处理 HTML 并构建 DOM 树。
+    // 2、处理 CSS 构建 CSSOM 树。
+    // 3、将 DOM 与 CSSOM 合并成一个渲染树。
+    // 4、根据渲染树来布局，计算每个节点的位置。
+    // 5、调用 GPU 绘制，合成图层，显示在屏幕上
+
+    // 浏览器内核 （js引擎模块（在主线程处理）、其他模块（在主\分线程处理））
+    // 浏览器内核模块组成
+    // 主线程：
+    // * js引擎模块：负责js程序的编译与运行
+    // * html,css文档解析模块：负责页面文本的解析
+    // * Dom,css模块：负责Dom,css在内存中的相关处理
+    // * 布局和渲染模块：负责页面的布局和效果的绘制（内存中的对象）
+    // 分线程
+    // * 定时器模块：负责定时器的管理
+    // * 事件响应模块：负责事件的管理
+    // * 网络请求模块：负责ajax请求
+
+    /** ----------------重排、重绘、回流 */
+    // —重排：当DOM的变化引发了元素几何属性的变化，比如改变元素的宽高，元素的位置，导致浏览器不得不重新计算元素的几何属性，并重新构建渲染树，这个过程称为“重排”。
+    // —重绘：改变了某个元素的背景色、文字颜色等等不会影响周围元素的位置变化时，就会发生重绘。
+    //           每次重绘后，浏览器还需要合并渲染层并输出到屏幕上。
+    // 　　   回流的成本要比重绘高很多，所以我们应该尽量避免产生回流。
+    // —回流(reflow)：当浏览器发现某个部分发生变化影响了布局时，需要倒回去重新渲染，会从html标签开始递归往下，重新计算位置和大小。
+    // 　　reflow基本是无法避免的，因为当你滑动一下鼠标、resize 窗口，页面就会产生变化。display:none 会触发回流，而 visibility:hidden 只会触发重绘
+
+    /*---------------------js设计模式 */
+    // js设计模式有：
+    // 单例模式：保证一个类只有一个实例。实现方法：判断实例是否存在，不存在，创建实例，存在直接返回。
+    // 工厂模式：通过对产品类的抽象使其创建业务主要负责用于创建多类产品实例。
+    // 观察者模式：当改变一个对象会同时改变其他对象时，应该使用观察者模式。观察者模式主要作用是解耦。
+    // 发布订阅模式
+    // 构造函数模式
+    // 模块模式
+    // 混合模式 = 原型模式 + 构造函数模式
+    // 装饰器模式
+
+    /* ------------------- js单线程 =》被分为同步任务和异步任务     */
+    //  线程：线程是cpu调度的最小单位 ，作为进程的一部分。（1、是进程内的一个独立执行单元 2、是程序执行的一个完整流程 3、cpu的最小调度单元）
+    //  进程：进程是资源分配的最小单位。   
+    //  单线程就意味着，所有任务需要排队，前一个任务结束，才会执行后一个任务。如果前一个任务耗时很长，后一个任务就不得不一直等待。
+    // 同步：同时只能做一件事  （包含绑定dom事件监听、设置定时器、发送ajax请求的代码）
+    // 异步：操作之间没关系，同时进行多个操作  （处理回调逻辑）
+
+    //  应用程序必须运行在某个进程的某个线程上
+    //  一个进程中至少有一个运行的线程：主线程，进程启动后自动创建
+    //  一个进程中也可以同时运行多个线程，我们会说程序是多线程运行的
+    //  一个进程内的数据可以供其中的多个线程直接共享
+    //  多个进程之间的数据是不能直接共享的
+    //  线程池(thread pool)：保存多个线程对象的容器，实现线程对象的反复利用
+    // 多进程：一个应用程序可以同时启动多个实例运行
+    // 多线程：在一个进程内，同时有多个线程运行
+    // 所有代码都是在 执行栈 执行的
+
+    // web works 可以让js在分线程执行，只能是主线程操作Dom更新页面，不能跨域加载js，不是每个浏览器都支持这个新特性
+    // var worker = new Worker('worker.js')
+    // worker.onmessage = function(event){event.data} //用来接收另一个线程发送过来的数据的回调
+    // worker.postMessage(data1) //向另一个线程发送数据
+
+    /* ------------------- 事件驱动模型 图1_事件循环模型 */
+    // 模型的组成：1、堆、栈 2、事件管理模块（浏览器事件管理模块webApi---dom事件、定时器、ajax）3、回调队列（宏队列、微队列）
+    // 模型的运转流程：
+    // 1、执行初始化代码、将事件回调函数交给对应的模块管理
+    // 2、当事件发生时，管理模块会将回调函数及其数据添加到回调队列中
+    // 3、只有当初始化代码执行完成后（需要一定时间），才会遍历读取回调队列中的回调函数执行
+    // 栈中的代码 =》浏览器处理（dom、ajax(XMLHttpRequest)、setTimeout）=》排入回调队列 
+
+    /* ------------------- 事件队列 优先级 【img-图2_事件队列】*/
+    // 事件循环(event loop)：它是一个在 JavaScript 引擎 等待任务、执行任务、进入休眠状态、等待更多任务、这几个状态之间转换的无限循环。
+    // 事件轮循 ：从任务队列中循环取出回调函数放入执行栈中处理（一个接一个）
+    // 事件机制
+    //  引擎执行任务时永远不会进行渲染（render）。如果任务执行需要很长一段时间也没关系。仅在任务完成后才会绘制对 DOM 的更改。
+    //  宏任务=》微任务=》浏览器渲染（Dom渲染）=》下一个宏任务
+
+    /* ------------------- 宏任务、微任务 */
+    // 关系：每个宏任务可以创建自己的微任务队列
+    // 1、js中用来存储待执行回调函数的队列包含2个不同特定的队列
+    // 2、宏队列：用来保存待执行的宏任务（回调），宏任务比如：script主代码块、定时器回调、Dom事件回调、ajax回调
+    // 3、微队列：用来保存待执行的微任务（回调），微任务比如：new Promise().then 回调 （由resolve，reject把任务放进微任务队列中去）、mutationObserver回调（监听标签属性改变）
+    // 4、js执行时会区别这 2 个队列
+    //    (1)js引擎首先必须先执行所有的初始化同步任务代码
+    //    (2)每次准备取出第一个宏任务执行前，都要将所有的微任务一个一个取出来执行
+    // .then(回调1).then(回调2) 回调1执行完成后，才能将回调2放入回调队列 ---因为回调2的结果由回调1的执行结果决定
+    // setTimeout(() => {
+    //   console.log(0)
+    // })
+    // new Promise((resolve, reject) => {
+    //   console.log(1)
+    //   resolve()
+    // }).then(() => {
+    //   console.log(2)
+    //   new Promise((resolve, reject) => {
+    //     console.log(3)
+    //     resolve()
+    //   }).then(() => {
+    //     console.log(4)
+    //   }).then(() => {
+    //     console.log(5)
+    //   })
+    // }).then(() => {
+    //   console.log(6)
+    // })
+    // new Promise((resolve, reject) => {
+    //   console.log(7)
+    //   resolve()
+    // }).then(() => {
+    //   console.log(8)
+    // })
+  </script>
+</body>
+
+</html>

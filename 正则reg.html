@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  【图 正则】
+  <!-- （）作用 表示捕获 、 分组  -->
+  <script>
+    /* 正则
+    1-  . 除换行符意外的 任意字符 （如果要包含换行符的话要在末尾加s，/…… /s）
+    2-  [ ]范围中的一个
+        [0-9] 表示的是0到9之间的任意的一个数字(包含0,也包含9)
+        [a-z]表示所有的小写的字母中的任意一个
+        [A-Z]表示的所有的大写字母中的任意一个
+        [a-zA-Z]
+        [0-9a-zA-Z]表示的是所有的数字和字母中任意一个
+        [yY]--->就是一个y  "fdYsfds"
+        [.]---->抱歉:就是一个.
+    3-  ( )----优先级和分组   ([0-9]([a-z]))两组:从左向右依次的计算
+    4-   | 或者  ([4-8]|[A-Z])  "12Eyui"
+    5-   * 该符号前面的表达式出现了0次到多次 [0-9][a-z]*
+    6-  + 该符号前面的表达式出现了1次到多次 [0-9][a-z]+
+    7-   ? 该符号前面的表达式出现了0次到1次
+    8-  { } 范围,次数的限定范围
+
+        {0,} 该符号前面的表达式出现了0次到多次
+        {1,} 该符号前面的表达式出现了1次到多次
+        {0,1}该符号前面的表达式出现了0次到1次
+        {3} 该符号前面的表达式出现了3次    [0-9]{3}  "ddweew37689"
+        {5,100}该符号前面的表达式出现了5次到100次
+    9-  \d   ---->所有的数字中的一个 和[0-9]是一样的
+        \D  ----->非数字
+        \s  ----->空白符号
+        \S  ----->非空白符号
+        \w  ----->非特殊符号 是有_
+        \W  ----->特殊符号 ,是没有_
+    ^  ----->1.以什么开头,2.取非  ^[0-9]以数字开头  [^0-9]  非数字
+    $  ----->以什么结尾    [0-9]$---->这个字符串应该是以数字结尾的才能和正则表达式匹配上
+    \b ----->单词的边界  "what are you no sha lei"; w前 t e y后面
+    g            str.match(/\d+/g); //全局模式 所有的
+    //g---->全局模式
+    //i---->忽略大小写
+    //m---->多行模式
+    RegExp.$3  三组  .$数
+    正则对象.exec方法和字符串的match方法是一样的---执行1次 res = reg.exec(str)
+    n=str.match(/ain/g)
+    ()是捕获到的东西
+    创建正则表达式的对象
+    1. 通过构造函数创建对象 var reg = new RegExp(/\d{3}/);
+    2. 字面量的方式创建正则表达式对象 var reg=/\d{3,5}/
+
+    es9扩展
+    1.命名捕获分组
+    let str='<a href="http://www.com">hhh</a>'
+    const reg= /<a href="(?<url>.*)">(?<text>.*)<\/a>/;
+    let res = reg.exec(str) //res.groups.url  //res.groups.text
+    2.反向断言 【 safari不支持反向断言 】
+    let str = 'aaa89898哈哈000啦啦';
+    let reg2 = /(?<=哈)\d+/   // 哈后面的数字
+    let res = reg.exec(str) //[000] 
+    正向断言（es5）
+    const reg = /\d+(?=啦)/   //啦前面的数字
+    let res = reg.exec(str) //[000]
+    es11
+    let res = str.matchAll(reg); console.log(…res);
+    //返回一个包含所有匹配正则表达式的结果及其分组捕获组的迭代器
+  */
+    let str = 'abc666kjlakjihj123';
+    console.log(str.replace(/\d/g, ''));
+    console.log(str.search(/\d/)); //返回index
+    console.log(str.search(/\d/g)); //search加g没有作用
+    console.log(str.match(/\d/));
+    console.log(str.match(/\d/g)); //match加g 能够寻找到所有匹配的字符
+    console.log(/^\d/.test('abc'));
+    console.log(/^\d/.test('77hhabc'));
+
+    console.log('34[abc]'.match(/^(\d+)\[/), '捕获作用'); //返回数组，捕获的项在下标为1的项上
+  </script>
+</body>
+
+</html>

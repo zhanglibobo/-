@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax、axios请求问题</title>
+</head>
+
+<body>
+  <script>
+    /* ----- ajax  */
+    /* // 1.创建对象
+    const xhr = new XMLHttpRequest();
+    // 2.初始化
+    xhr.open('GET', 'http://url');
+    // 3.发送
+    xhr.send();
+    // 4.绑定事件，处理相应结果
+    xhr.onreadystatechange = function () {
+      // 4是响应完成
+      if (xhr.readyState === 4) {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          // 成功
+          console.log(xhr.response)
+        } else {
+          // 失败
+          console.log(xhr.status)
+        }
+      }
+    } */
+    // get:  Query String Parameters   { params } 是即将与请求一起发送的 URL 参数
+    // post: Request Payload           { data } 是作为请求主体被发送的数据
+    // 1、语义：GET一般是获取数据或资源 POST提交数据给服务器
+    // 2、参数：GET请求通过queryString形式携带参数，在地址栏后面拼接 不在请求体里
+    //         POST请求通过requestBody携带参数，地址栏里没有
+    // 3、数据量：GET理论上无限，受浏览器的地址栏限制 IE 2kb
+    //          POST理论上无限，受服务器限制
+    // 4、安全性：GET相对不安全
+    //          POST相对安全
+    // 5、缓存：GET会被浏览器主动缓存
+    //         POST需要手动设置
+    // 6、数据格式： GET请求只能发送url编码的数据
+    //             POST可以发送任意格式的数据，和content-type匹配
+    // headers:{'Content-Type': 'application/json'}
+    // headers:{'Content-Type': 'multipart/form-data'} //传输数据为二进制类型
+    // encodeURI('') // 把URI字符串采用UTF-8编码格式转化成escape格式的字符串
+    // decodeURI('') // URI 进行解码
+
+    /** -----------axios */
+    // 1、 .then后面.then怎么用
+    // .then(()=>{return 一个promise }).then
+    // 2、 axios请求拦截器 可以添加token验证
+    // axios.interceptors.request.use(
+    //  function(config) {
+    //    const token = getToken();
+    //     if (token) {
+    //       config.headers['Authorization'] = token; // 让每个请求携带自定义token    }
+    //      return config;
+    //   },
+    //   function(error) {
+    //    return Promise.reject(error);
+    //   }
+    // )
+    // 3、axios响应拦截器 封装200以外错误情况
+    // axios.interceptors.response.use( 
+    // function(response){
+    //  const res = response.data
+    //     // 请求成功
+    //     if (res.status === 200) {
+    //       return response.data
+    //     }
+    // }),
+    //   function(error) {
+    //    return Promise.reject(error);
+    //   }
+    // )
+    // ---------------Token
+    // 1.登录页面输入用户名和密码进行登录
+    // 2.服务器验证通过之后生成该用户的token并返回
+    // 3.客户端存储该token
+    // 4.后续所有的请求都携带该token并发送请求
+    // (request headers config添加Authorization:token)
+    // 5.服务器验证token是否通过
+
+    /** --------------Nginx*/
+    // 外网访问内网的情况（pdf保密情况）
+    // 1.输入www.baidu.com  （wifi=>猫=>交换机=>DNS解析 将相应的域名解析为公网ip）
+    // 2.获取到对应公网ip 233.6.5.4，通过ip访问到对应的服务器
+    //  (此服务器内网ip为192.168.5.5)
+    // 3.此服务配置了nginx，由ng进行转发到 192.168.5.3:8080
+    // 4.访问到192.168.5.3:8080的Tomcat服务
+    // 外网访问外网的情况（正常情况）
+    // 1.输入www.baidu.com 由ip找到对应ng服务
+    // (先从host文件中查找 配置域名映射的ip地址， 找不到的话在走host解析或DNS解析)
+    // 2.在ng配置path:/exam-analysis-front/  upstream:10.10.30.5:17234
+    // 3.匹配到/exam-analysis-front/ 转发到10.10.30.5:17234这台服务器
+    // --------------Nginx作用
+    // webpack vue-server (实现了1，2)
+    // 1.web容器 （存放dist文件）
+    // 2.反向代理 （优点：1.安全 不用暴露数据库服务器外网ip 2.节约 由ng可以转发不同服务器）
+    // 3.LB负载均衡
+    // 输入网址点回车后发生了什么
+    // 1.输入url地址后，首先进行DNS解析，将相应的域名解析为IP地址
+    // 2.客户端根据IP地址去寻找相应的服务器
+    // 3.与服务器进行TCP的三次握手
+    // （第一次 客户端向服务端发送请求报文 请求建立新连接）
+    // （第二次 服务端接收到来自客户端的TCP报文 同意创建新连接）
+    // （第三次 客户端确认收到服务端连接）
+    // 4.客户端找到相应的资源库，根据资源库返回页面信息
+    // 5.浏览器根据自身的执行机制解析页面（渲染页面）
+    // （浏览器解析页面时，会找到每一个文件夹（css、js、html、img......），每一个文件夹下的资源会重新走到第二步，去找到相应的服务器，然后一步步执行）
+    // 6.最后服务器将解析信息返回给客户端，进行TCP的四次挥手
+
+
+    /** ------内存 */
+    // 内存条通电后产生的存储空间（临时的）
+    // 产生和死亡： 内存条（集成电路板）==》通电==》产生一定容量的内存空间==》存储各种数据==》断电==》内存全部消失
+    // 内存的空间是临时的，而硬盘的空间是持久的
+    // 分配内存：声明变量和函数或创建对象时，js引擎会自动为此分配一定大小的内存来存放对应的数据
+    // 释放内存：清空内存中的数据，标识内存可以再分配使用（内存不释放就不能复用）
+    // 自动释放：栈空间的局部变量
+    // 垃圾回调器回调：堆空间的垃圾对象
+    // 一个内存包含2个数据 
+    // 1、内部存储的数据（一般数据/地址数据）
+    // 2、内存地址值数据
+    // 内存分类 1、栈：全局变量，局部变量（空间较小） 2、堆：对象（空间较大）
+
+
+
+    /** ----------------本地缓存（硬盘缓存） */
+    // cookie           4k   可以设置失效时间                        http头中通信    要自己封装，原生接口可以接受，也可以再次封装对Object和Array  可以跨域
+    // localStorage     5m   除非被清除，否则永久保存，存在xss风险      不参与通信(存在本地)
+    // sessionStorage   5m   当前会话有效，关闭页面清除，存在xss风险    不参与通信(存在本地)
+    // session          无限制 不存在xss风险，窗口失效                 服务器中，不通信  不跨域
+
+    /** ----------------离线缓存（应用程序缓存）mf.appcache */
+
+    /** ----------------http缓存 */
+    // 为什么要缓存：
+    // 相对于cpu的计算和页面加载速度来说，网络请求更耗时
+    // 所以通过http缓存的方式来减少网络请求，从而达到访问前端页面的性能优化
+    // http缓存策略：强制缓存、协商缓存（弱缓存、对比缓存）
+    // 强制缓存：不发起http请求，直接使用本地缓存，
+    //  比如浏览器地址栏回车，使用浏览器刷新按钮，在Expires或max-age（Cache-Control: max-age=2592000）生效的情况下，触发的都是强缓存
+    // 协商缓存：在使用本地缓存前，先与服务器协商，核对缓存文件是否为最新。
+    //  比如设置了cache-control=no-cache，不管你做任何操作，都会发起请求，这一类就是协商缓存了
+    //  服务器收到请求，根据Etag的值判断被请求的文件有没有做修改，Etag的值一致则走协商缓存，如果不一致，则有改动，直接返回新的资源文件带上新的Etag值。
+    //  如果没有Etag，则将if-Modified-Since和被请求文件的最后修改时间作对比，一致则走协商缓存，返回304，不一致则返回新的last-modified和文件返回200。
+
+    /** ----------------内存缓存和硬盘缓存 */
+    // (from memory cache）内存缓存 (关闭页面就清除了)
+    //（from disk cache）硬盘缓存
+    // 缓存原理：现查找内存，内存中有，直接从内存中加载=》没有则取硬盘获取，有则加载=》硬盘没有，进行网络请求=》加载到的资源缓存到硬盘和内存
+
+    /* ---------------http状态码 */
+    // 　100-199 接受的请求正在处理。
+    // 　200-299 用于表示请求成功。
+    // 　300-399 需要进行附加操作以完成请求。
+    // 　400-499 用于指出客户端的错误。服务器无法处理请求 403 Forbidden：服务器拒绝该次访问（访问权限出现问题）
+    // 　500-599 用于支持服务器错误。
+  </script>
+</body>
+
+</html>

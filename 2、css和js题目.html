@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>前端面试题</title>
+  <style>
+    #box {
+      box-sizing: content-box;
+    }
+
+    #box1 {
+      width: 100px;
+      height: 100px;
+      padding: 20px;
+      margin: 20px;
+      border: 1px solid #ccc;
+    }
+
+    #box2 {
+      width: 100px;
+      height: 100px;
+      padding: 20px;
+      margin: 20px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+    }
+
+    .flexBox {
+      height: 100px;
+      width: 200px;
+      background-color: #ccc;
+      /* 设置为flex后，float、clear、vertical-align失效 */
+      display: flex;
+      /* flex-direction: row;
+      flex-direction: row-reverse;
+      flex-direction: column;
+      flex-direction: column-reverse; */
+
+      /* flex-wrap: nowrap;
+      flex-wrap: wrap;
+      flex-wrap: wrap-reverse; */
+
+      /* flex-flow: flex-direction和flex-wrap简写; */
+
+      /* 横向 */
+      /* justify-content: flex-start;
+      justify-content: flex-end;
+      justify-content: center;
+      justify-content: space-between;
+      justify-content: space-around; */
+
+      /* 竖向 */
+      /* align-items: flex-start;
+      align-items: flex-end;
+      align-items: center;
+      align-items: baseline;
+      align-items: stretch; */
+
+      /* 轴线 */
+      /* align-content: flex-start;
+      align-content: flex-end;
+      align-content: center;
+      align-content: space-between;
+      align-content: space-around;
+      align-content: stretch; */
+    }
+
+    .flexBoxitem {
+      /* 数字 */
+      /* order: 1; */
+      /* flex-grow: 0;
+      flex-grow: 1; */
+      /* flex-shrink: 0;
+      flex-shrink: 1; */
+      /* px */
+      /* flex-basis: auto; */
+      /* flex: 1; flex-grow flex-shrink flex-basis简写*/
+
+      /* 覆盖 align-items */
+      /* align-self: auto;
+      align-self: flex-start;
+      align-self: flex-end;
+      align-self: center;
+      align-self: baseline;
+      align-self: stretch; */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+    }
+
+    html {
+      -webkit-text-size-adjust: none;
+      font-size: 50px;
+    }
+
+    .label {
+      font-size: 12px;
+      font-size: 8px;
+    }
+
+    .aside {
+      width: 100px;
+      height: 150px;
+      float: left;
+      background: black;
+    }
+
+    .main {
+      width: 300px;
+      height: 200px;
+      background-color: red;
+      overflow: hidden;
+    }
+
+    /**移动端0.5px边框**/
+    /* .border-init(@color) {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 1px;
+      height: 1px;
+      background-color: @color;
+    }
+
+    .border(T, @color: @border) {
+      &::before {
+        .border-init(@color);
+        bottom: inherit;
+        width: 100%;
+        transform: scale(1, 0.5);
+      }
+    }
+
+    .border(B, @color: @border) {
+      &::before {
+        .border-init(@color);
+        top: inherit;
+        width: 100%;
+        transform: scale(1, 0.5);
+      }
+    }
+
+    .border(L, @color: @border) {
+      &::before {
+        .border-init(@color);
+        right: inherit;
+        height: 100%;
+        transform: scale(0.5, 1);
+      }
+    }
+
+    .border(R, @color: @border) {
+      &::before {
+        .border-init(@color);
+        left: inherit;
+        height: 100%;
+        transform: scale(0.5, 1);
+      }
+    }
+
+     设置多行文本超出隐藏
+    .ellipsis-lines(@n: 2) {
+      width: 100px;
+      overflow: hidden;
+      display: -webkit-box; //将元素设为盒子伸缩模型显示
+      -webkit-box-orient: vertical; //伸缩方向设为垂直方向
+      -webkit-line-clamp: @n; //超出3行隐藏，并显示省略号
+    } */
+  </style>
+</head>
+
+<body>
+  <div class="test">
+  </div>
+  <div class="label">什么快结束了尽量快放假快乐送到家附近的
+  </div>
+  <!-- 1.盒模型  box height:262px-->
+  <!-- (1).标准盒模型 width 和 height 指的是内容区域的宽度和高度 -->
+  <!-- (2).怪异盒模型 width 和 height 包括了border+padding的宽度和高度-->
+  <!-- <div id="box">
+    <div id="box1"></div>
+    <div id="box2"></div>
+  </div> -->
+  <!-- bfc-块级格式化上下文 触发bfc特性： 
+    1.body根元素 即html元素
+    2.浮动元素 
+    3.absolute、fixed定位元素 
+    4.display为： inline-block、table-cells、flex
+    5.overflow 除了visible以外的值 (hidden、auto、scroll)
+    解决了问题：
+    1、解决浮动元素令父元素高度塌陷的问题
+    2、解决自适应布局的问题（两栏布局）
+    3、解决外边距垂直方向重合的问题
+   -->
+  <div>
+    <div class="aside"></div>
+    <div class="main"></div>
+  </div>
+  <!-- ifc-行级格式化上下文
+      font-size
+      line-height
+      height
+      vertical-aligin -->
+  <!-- 2.flex弹性布局 -->
+  <!-- <div class="flexBox">
+    <div class="flexItem" style="background-color: aqua;flex-basis: 100px;height:50px;align-self: flex-end;">一</div>
+    <div>导航</div>
+    <div>导航</div>
+    <div>导航</div>
+    <div>导航导航</br>导航导航</div>
+  </div> -->
+  <!-- 3.在新窗口中打开 -->
+  <!-- <a href="" target="blank">1111</a> -->
+  <!-- css过渡和动画的区别 -->
+  <!-- 
+      1、css过渡需要有一个事件触发（像 :需要借助hover、js、@media触发），才会起作用，而animation不需要。
+      2、动画（animation）可以定义很多个关键帧和设置循环次数，而过渡不可以。
+     -->
+  <!-- css(补间动画)js(帧动画) -->
+  <!-- 
+  css(补间动画)确定第一帧和最后一帧的关键位置即可
+  1、css3动画 浏览器可以对动画进行优化。
+  2、对于帧速表现不好的低版本浏览器，CSS3可以做到自然降级，而JS则需要撰写额外代码
+  3、运行过程控制较弱
+  js(帧动画) 
+  1、js动画控制能力很强,可以在动画播放过程中对动画进行控制：开始、暂停、回放、终止、取消都是可以做到的
+  2、动画效果比css3动画丰富,有些动画效果只有JavaScript动画才能完成
+  3、CSS3有兼容性问题，而JS大多时候没有兼容性问题
+  4、js在浏览器的主线程中运行，而主线程中还有其它需要运行的JavaScript脚本、样式计算、布局、绘制任务等,对其干扰导致线程可能出现阻塞，从而造成丢帧的情况。 -->
+  <script>
+    /* 4. */
+    // var arr = [{
+    //   name: "张",
+    //   age: 18
+    // }, {
+    //   name: "张",
+    //   age: 18
+    // }]
+    // var res = arr.map((item) => {
+    //   return {
+    //     ...item,
+    //     age: item.age + 1
+    //   }
+    // })
+    // console.log(arr)
+    // console.log(res)
+    /*  map和foreach区别  */
+    // 1.forEach()方法不会返回执行结果，而是undefined，可以改变原数组
+    // 2.map()方法会得到一个新的数组并返回。
+    /* let arr = [1, 2]
+     arr.forEach((num, index) => {
+       arr[index] = num * 2;
+     });
+     console.log(arr)*/
+    // --------------
+    // parseInt(string, radix) ---radix该值介于 2 ~ 36 之间，默认为0，若不是返回NaN
+    // console.log(parseInt(20,10));
+    // console.log(parseInt(10,2));//2
+    // var numbers = [1, 2, 3, 4, 5, 6];
+    // var res = numbers.map(function (item, index, array) {
+    //   return item*2
+    // });
+    // console.log(res);//创建新数组
+    // console.log(["1", "2", "3"].map(parseInt));//[1,NaN,NaN] parseInt('1',0) parseInt('2',1) parseInt('3',2) 
+    // -------------------
+
+    /* 5.斐波那契数列 */
+    // var num1 = 1;
+    // var num2 = 1;
+    // var sum = 0;
+    // for(var i=3;i<9;i++){
+    //   sum = num1+num2;
+    //   num1 = num2;
+    //   num2 = sum;
+    // }
+    // console.log(num2)
+
+    /* 6.冒泡排序 */
+    // var arr = [7, 3, 9, 13, 1, 2, 5, 4];
+    // for(var i=0;i<arr.length-1;i++){
+    // console.log(arr)
+    //   for(var j=0;j<arr.length-1-i;j++){
+    //     if(arr[j]>arr[j+1]){
+    //       var temp = arr[j];
+    //       arr[j] = arr[j+1];
+    //       arr[j+1] = temp;
+    //     }
+    //   }
+    // }
+    // console.log(arr)
+    /* -------冒泡排序优化 */
+    // var flag = true; //假设成立
+    // var count = 0;
+    // for (var i = 0; i < arr.length - 1; i++) {
+    //   count++;
+    //   for (var j = 0; j < arr.length - 1 - i; j++) {
+    //     if (arr[j] > arr[j + 1]) {
+    //       var temp = arr[j];
+    //       arr[j] = arr[j + 1];
+    //       arr[j + 1] = temp;
+    //       flag = false;
+    //     }
+    //   }
+    //   if (flag) {
+    //     break
+    //   }
+    // }
+    // console.log(arr)
+    // console.log(count)
+    /* --------翻转数组1 */
+    // for(var i=0;i<arr.length/2;i++){
+    //   var temp = arr[i];
+    //   arr[i] = arr[arr.length-i-1];
+    //   arr[arr.length-i-1] = temp;
+    // }
+    // console.log(arr)
+    /* ---------翻转数组2 */
+    // var newArr=[];
+    // for(var i=arr.length-1;i>=0;i--){
+    //   newArr[newArr.length] = arr[i]
+    // }
+    // console.log(newArr)
+    /* --------数组去重假设成立法---方法一：*/
+    // var arr = [1, 1, 3];
+    // var newArr = [];
+    // newArr[newArr.length] = arr[0];
+    // for(var i=1;i<arr.length;i++){
+    //   var flag = true;
+    //   for(var j=0;j<newArr.length;j++){
+    //     if(newArr[j] == arr[i]){
+    //       flag = false;
+    //       break
+    //     }
+    //   }
+    //   if(flag){
+    //     newArr[newArr.length] = arr[i]
+    //   }
+    // }
+    // console.log(newArr)
+    /* --------数组去重计数法---方法二：*/
+    //  for(var i=1;i<arr.length;i++){
+    //    var count=0;
+    //    for(var j=0;j<newArr.length;j++){
+    //       if(newArr[j] == arr[i]){
+    //         count++;
+    //       }
+    //    }
+    //    if(count === 0){
+    //      newArr[newArr.length] = arr[i]
+    //    }else{
+    //    console.log(i+""+count)
+    //    }
+    //  }
+    //  console.log(newArr)
+    /* -------数组去重利用循环特性---方法三：*/
+    // for(var i=1;i<arr.length;i++){
+    //   for(var j=0;j<newArr.length;j++){
+    //       if(arr[i] == newArr[j]){
+    //         break
+    //       }
+    //   }
+    //   if(j==newArr.length){
+    //     newArr[newArr.length] = arr[i]
+    //   }
+    // }
+    // console.log(newArr)
+    /* -------数组去重 Set---方法四：*/
+    // let arr = [1, 1, 3];
+    // let res = [...new Set(arr)]
+    // console.log(res);
+    /* -------数组去重 reduce---方法五：*/
+    // let arr = [{
+    //   id: 1
+    // }, {
+    //   id: 1
+    // }, {
+    //   id: 2
+    // }, {
+    //   id: 1
+    // }];
+    // function duplicateArr(arr, type) {
+    //   if (arr.length == 0) {
+    //     return arr;
+    //   } else {
+    //     if (type) {
+    //       var obj = {};
+    //       var newArr = arr.reduce((cur, next) => {
+    //         debugger
+    //         obj[next.id] ?
+    //           '' :
+    //           (obj[next.id] = true && cur.push(next));
+    //         return cur;
+    //       }, []);
+    //       return newArr;
+    //     } else {
+    //       return Array.from(new Set(arr));
+    //     }
+    //   }
+    // }
+    // reduce(('累积器',cur,index,arr)=>{}, initialValue)
+    // 简单类型数组 reduce
+    // let arr = [1, 2, 1, 9];
+    // let newArr = arr.reduce((cur, next) => {
+    //   if (cur.length == 0) {
+    //     cur.push(next)
+    //   } else {
+    //     cur.indexOf(next) > -1 ? '' : cur.push(next)
+    //   }
+    //   return cur
+    // }, [])
+    // console.log(newArr)
+
+    /* 7.伪数组 arguments 是可以在函数内获取用户在调用函数的时候传入了几个参数 */
+    // function addArr(){
+    //   for(var i=0;i<arguments.length;i++){
+    //     console.log(arguments[i])
+    //   }
+    // }
+    // addArr(1,2,3)
+
+    /*  8. not defined 未声明未赋值 undefined声明了未赋值 */
+    // console.log(num)
+    // var number;console.log(number)
+    // 隐式的全局变量:声明变量,没有使用var  
+    // function f1() {
+    //   number=10000;
+    // }
+    // console.log(number);//not defined
+    // f1();console.log(number);//10000
+    // y=100;delete y;console.log(y)//no defined把隐式全局变量删除 var let声明的删除不掉
+    // delete obj.weight;console.log(obj.weight);//undefined
+
+    /*   9. 原型   */
+    // console.log(dog.__proto__ === Animal.prototype);
+    // console.log(dog.__proto__.letructor === Animal.prototype.letructor);
+    // console.log(dog.letructor === Animal.prototype.letructor);
+    // 构造函数中的this和原型对象方法中的this指向相同,都是实例对象
+    // 
+
+    /* 11.正则表达式  用来匹配字符串的 */
+    // --获取url上的参数
+    // function GetQuery(name) {
+    //   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    //   var r = window.location.search.substr(1).match(reg);
+    //   if (r != null) return decodeURIComponent(r[2]);
+    //   return null;
+    // }
+    // 12.parseUrl(url)
+    // function parseUrl(url){
+    //   let a = url.split("://");
+    //   let protocol = a[0];
+    //   let host = a[1].split("/")[0];
+    //   let path = a[1].substr(a[1].indexOf("/")).split("?")[0];
+    //   let paramsStr = url.split("?")[1].split("#")[0];
+    //   let params = getParams(paramsStr);
+    //   let hash = url.split("#")[1];
+    //   return {
+    //     protocol,
+    //     host,
+    //     path,
+    //     params,
+    //     hash
+    //   }
+    // }
+    // function getParams(paramsStr){
+    //   let paramsStrArr = paramsStr.split("&");
+    //   let params = {};
+    //   for(let item of paramsStrArr){
+    //     let itemArr = item.split("=");
+    //     let key = itemArr[0];
+    //     let value = itemArr[1];
+    //     params[key] = value;
+    //   }
+    //   return params
+    // }
+
+    /* 12.关系型数组转换成树形结构对象*/
+    // var obj = [{
+    //     id: 3,
+    //     parent: 2
+    //   },
+    //   {
+    //     id: 1,
+    //     parent: null
+    //   },
+    //   {
+    //     id: 2,
+    //     parent: 1
+    //   },
+    // ];
+
+    // function getTree(obj) {
+    //   obj.sort((a, b) => b.parent - a.parent);
+    //   console.log(obj)
+    //   return obj.reduce((total, item) => {
+    //     return ({
+    //       ...item,
+    //       child: total
+    //     })
+    //   })
+    // }
+    // console.log(getTree(obj));
+    // let arr = [1, 2, 3, 4];
+    // let sum = arr.reduce(function (prev, cur, index, arr) {
+    //   console.log(prev, cur, index);
+    //   return prev + cur;
+    // })
+    // console.log(arr, sum);
+    /* 13.构造函数*/
+    /* function AllPlayer(arr) {
+      this.arr = arr;
+    }
+    AllPlayer.prototype.get = function (name) {
+      var obj = {};
+      this.arr.forEach(item => {
+        if (obj[item]) {
+          obj[item]++
+        } else {
+          obj[item] = 1
+        }
+      });
+      return obj[name]
+    }
+    AllPlayer.prototype.add = function (arr) {
+      this.arr = this.arr.concat(arr)
+    }
+    var Player = new AllPlayer(['张三', '李四', '王五', '赵六', 'Tom', 'Jack', 'Jerry']);
+    class AllPlayer {
+      constructor(arr) {
+        this.arr = arr;
+      }
+      get(name) {
+        var obj = {};
+        this.arr.forEach(item => {
+          if (obj[item]) {
+            obj[item]++
+          } else {
+            obj[item] = 1
+          }
+        });
+        if(obj[name]){
+          return obj[name]
+        }else{
+          return 0
+        }
+      }
+      add(params) {
+        this.arr = this.arr.concat(params)
+      }
+    }
+    var Player = new AllPlayer(['张三', '李四', '王五', '赵六', 'Tom', 'Jack', 'Jerry']);
+
+    console.log(Player.get('王二麻子'));// 返回 0 王二麻子没有出现过
+    console.log(Player.get('张三')) // 返回 1 张三出现过1次
+    Player.add(['张三','张三丰']) 
+    console.log(Player.get('张三')) // 返回 2 张三出现过2次
+
+
+    /* 数组转换为树形结构 */
+    // let arr = [{
+    //     id: "01",
+    //     name: "张大大",
+    //     pid: "",
+    //     job: "项目经理"
+    //   },
+    //   {
+    //     id: "02",
+    //     name: "小亮",
+    //     pid: "01",
+    //     job: "产品leader"
+    //   },
+    //   {
+    //     id: "03",
+    //     name: "小丽",
+    //     pid: "02",
+    //     job: "产品经理"
+    //   },
+    //   {
+    //     id: "04",
+    //     name: "大光",
+    //     pid: "02",
+    //     job: "产品经理"
+    //   },
+    // ]
+    // ----------------- 转换为 -----------------------------
+    // [{
+    //   label: '项目经理-张大大',
+    //   children: [{
+    //     label: '产品leader-小亮',
+    //     children: [{
+    //         label: '产品经理-小丽'
+    //       },
+    //       {
+    //         label: '产品经理-大光'
+    //       }
+    //     ]
+    //   }]
+    // }]
+
+    // function arrToTree(data) {
+    //   let nData = JSON.parse(JSON.stringify(data)) // 数组深拷贝，避免影响源数据
+    //   let result = []
+    //   let map = {};
+    //   nData.forEach(item => { // 遍历数组 把每一项的引用放入map对象里
+    //     map[item.id] = item;
+    //     // delete item.id // id 已经保存在了map.key里 可以删掉
+    //   });
+    //   console.log(map);
+    //   nData.forEach(item => { // 再次遍历数组 决定item的去向
+    //     let parent = map[item.pid];//去map中找到父级
+    //     // 以下为数据处理
+    //     item.label = item.job + '-' + item.name
+    //     // delete item.pid
+    //     // delete item.name
+    //     // delete item.job
+    //     if (parent) {
+    //       // 如果 map[item.pid] 有值 则 parent 为 item 的父级
+    //       // 判断 parent 里有无children 如果没有则创建 如果有则直接把 item push到children里
+    //       (parent.children || (parent.children = [])).push(item);
+    //     } else {
+    //       // 如果 map[item.pid] 找不到值 说明此 item 为 第一级
+    //       result.push(item);
+    //     }
+    //   });
+    //   return result;
+    // }
+    // let res = arrToTree(arr);
+    // console.log(res)
+
+    /* // 页面关闭后需要调用接口
+     const formData = new FormData();
+     Object.keys(params).forEach(key => {
+       formData.append(key, params[key]);
+     });
+     const url =
+       getServerUrl('exam-analysis-front') + '/report/open/stayTime/close';
+     const res = navigator.sendBeacon(url, formData);
+     */
+
+    /*-------------执行顺序--*/
+    // setTimeout(() => {
+    //   console.log('我是宏任务', 5);
+    // }, 0); //先来个宏任务
+    // //  其实每一个Promise.then也是一个Promise...
+    // new Promise((resolve, reject) => {
+    //     reject('第一次执行失败');
+    //     console.log('主线程1', 1);
+    //   })
+    //   .then(result => {
+    //     console.log(result);
+    //   }, err => {
+    //     console.log(err, 3);
+    //   })
+    //   .then( //对上一次then执行结果的处理
+    //     result => {
+    //       console.log('后续处理成功啦',4)
+    //     },
+    //     err => {
+    //       console.log('后续处理还是失败');
+    //     }
+    //   )
+    // console.log('主线程2', 2);
+
+    /* -----------------函数执行---压栈 【图4-压栈】 */
+    // console.log('one', i);
+    // var i = 1;
+    // foo(1);
+    // function foo(i) {
+    //   if (i == 4) return;
+    //   console.log('two', i);
+    //   foo(i + 1);
+    //   console.log('three', i);
+    // }
+    // console.log('four' + i) // ***1
+
+    // 先执行变量提升，再执行函数提升
+    // function a() {}
+    // var a;
+    // console.log(a)//function
+    // var a = 1;
+    // function a() {}
+    // console.log(a)//1
+
+    // function fn(a1) {
+    //   console.log(a1) //2
+    //   console.log(a2) //undefined
+    //   a3() //a3
+    //   console.log(this) //window
+    //   console.log(arguments) //[2,3]
+    //   var a2 = 3
+
+    //   function a3() {
+    //     console.log('a3')
+    //   }
+    // }
+    // fn(2, 3)
+
+    // var a = 10;
+    // var bar = function (x) {
+    //   var b = 5;
+    //   foo(x + b)
+    // }
+    // var foo = function (y) {
+    //   var c = 5
+    //   console.log(a + c + y)
+    // }
+    // bar(10)
+
+    // if(!(b in window)){
+    //   var b = 1
+    // }
+    // console.log(b)
+
+    // var fn = function () {
+    //   console.log(fn)
+    // }
+    // fn()
+    // var obj = {
+    //   fn2: function () {
+    //     console.log(fn2)
+    //   }
+    // }
+    // obj.fn2()
+
+    // 类型转换
+    // var i = 2;
+    // Number.prototype.valueOf = function () {
+    //   return i++;
+    // };
+    // var a = new Number(42);
+    // if (a == 2 && a == 3) {
+    //   console.log('success');
+    // }
+    // 假值的相等比较
+    // '0' == null; //false
+    // '0' == undefined; //false
+    // '0' == false; //true
+    // '0' == NaN; //false
+    // '0' == 0; //true
+    // '0' == ''; //false
+
+    // false == null; //false
+    // false == undefined; //false
+    // false == NaN; //false
+
+    // false == 0; //true
+    // false == ''; //true
+    // false == []; //true --Number([]) == 0
+    // false == {}; //false
+
+    // '' == null; //false
+    // '' == undefined; //false
+    // '' == NaN; //false
+    // '' == 0; //true
+    // '' == []; //true
+    // '' == {}; //false
+
+    // 0 == null; //false
+    // 0 == undefined; //false
+    // 0 == NaN; //false
+    // 0 == []; //true
+    // 0 == {}; //false
+
+    // [] == ![];//true
+
+    // 闭包
+    // 再次调用外包函数，产生闭包，若没有变量保存，则消失
+    // function fun(n, o) {
+    //   console.log(o)
+    //   return {
+    //     fun: function (m) {
+    //       return fun(m, n)
+    //     }
+    //   }
+    // }
+    // var a = fun(0); //undefined
+    // a.fun(1);
+    // a.fun(2);
+    // a.fun(3); 
+    // var b = fun(0).fun(1).fun(2).fun(3); //undefined
+    // var c = fun(0).fun(1); // undefined
+    // c.fun(2);
+    // c.fun(3); 
+  </script>
+</body>
+
+</html>

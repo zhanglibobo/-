@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vuex-状态管理模式</title>
+</head>
+
+<body>
+  <script>
+    // 安装 Vue.use(Vuex)
+    // 创建对象 const store = new Vuex.Store({
+    //    state:{},      this.$store.state
+    //    getters:{},    this.$store.getters.方法名                            (state, getters){return(参数)=>{}}
+    //    mutations:{},  this.$store.commit('',参数) /({type:'', payload:{}})  (state, 参数){}
+    //    actions:{},    this.$store.dispatch('',参数)                         (context, 参数){}
+    //    modules:{ a:moduleA }   this.$store.state.a.name （a会加入到state对象中）
+    // })
+    // 异步操作： Vue组件=》分发dispatch(actions)=>提交commit（mutations devtools可以记录state修改状态）=》state修改
+    // import { mapGetters } from 'Vuex'; 
+    // computed: { ...mapGetters }
+
+    // store:{}                    this.$store.state.
+    // mutations:{fn(state,参数)}  this.$store.commit("方法名"，参数)
+    // getters:{fn(state,getters)} this.$store.getters.方法
+    // actions:{fn(context,参数)}  this.$store.dispatch("方法"，参数)
+    // modules:{a:moduleA}
+    // ------------
+    // import{mapState,mapGetters,mapMutations,...mapActions}from 'vuex'
+    // computed:{
+    //     ...mapGetters(['cartList','cartCount']),
+    //     ...mapState(['count'])
+    // }
+    // methods:{...mapMutations([]),...mapActions([])}
+    // -----------------
+    // vuex刷新后数据丢失怎么办
+    // 1.将vuex中的数据直接保存到浏览器缓存中（sessionStorage、localStorage、cookie）
+    // 2.在页面刷新的时候再次请求远程数据，使之动态更新vuex数据
+    // （在app.vue这个入口文件中 保证每次刷新都可以触发）
+    // export default {
+    //   name: 'App',
+    //   created () {
+    //     //在页面加载时读取sessionStorage里的状态信息
+    //     if (sessionStorage.getItem("store") ) {
+    //         this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+    //     } 
+
+    //     //在页面刷新时将vuex里的信息保存到sessionStorage里
+    //     window.addEventListener("beforeunload",()=>{
+    //         sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+    //     })
+    //   }
+    // }
+  </script>
+</body>
+
+</html>

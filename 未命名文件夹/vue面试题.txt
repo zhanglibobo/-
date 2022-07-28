@@ -1,0 +1,286 @@
+vue的生命周期：
+	1.beforeCreate：实例组件刚创建，元素DOM和数据都还没有初始化
+	2.created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图（在实例创建完成后被立即调用）
+	3.beforeMount:在挂载开始之前被调用：相关的 render 函数首次被调用。
+		在服务端渲染期间不被调用。将编译完成的html挂载到对应的虚拟dom时触发，此时页面为空
+	4.mounted：实例被挂载后调用，不会保证所有的子组件也都一起被挂载，如果需要则 vm.$nextTick
+	5.breforeUpdate：数据更新时调用，发生在虚拟 DOM 打补丁之前。
+	6.updated当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作，
+		如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之， updated 不会保证所有的子组件也都一起被重绘
+	7.actived：被keep-alive缓存的组件激活时调用
+	8.deactived:被keep-alive缓存的组件停用时调用
+	9.beforeDestory：实例销毁之前调用。在这一步，实例仍然完全可用。
+	10.destoryed：实例销毁后调用。该钩子被调用后，对应 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁。
+	11.errorCaptured:2.5.0新增。当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。
+		此钩子可以返回 false 以阻止该错误继续向上传播。
+vue中updated和watch computed filter 区别：
+	updated:
+		触发条件：
+			1、 当data中定义的数据有变化时就会加载updated方法。
+			2、 任何数据的更新，如果要做统一的业务逻辑处理
+			3、 在大多数情况下，此期间避免更改状态，因为这可能会导致更新无限循环。该钩子在服务器端渲染期间不被调用。
+		特点：
+			1. 执行到它的时候时候是数据发生变化且界面更新完毕
+			2. 不能监听到路由数据(例如网址中的参数)
+			4. 只要数据发生变化， 每次触发的代码都是同一个
+			3. 所有的数据发生变化都会调用(消耗性能)
+	watch：
+         1、watch 函数是不需要调用的。
+         2、重点在于监控，监控数据发生变化的时候，执行回调函数操作。
+         3、当我们需要在数据变化时执行异步或开销较大的操作时，应该使用 watch
+         4、函数名就是你要监听的数据名字
+         5、监控一些input框值的特殊处理， 适合一个数据影响多个数据。
+         6、deep: true 该回调会在任何被侦听的对象的 property 改变时被调用，不论其被嵌套多深
+    computed：
+         特点：
+         1、监控自己定义的变量，不用再data里面声明，函数名就是变量名
+         2、适合多个变量或对象进行处理后返回一个值(结果)。若这多个变量发生只要有一个发生变化，结果都会变化。
+         3、计算的结果具有缓存,依赖响应式属性变化，响应式属性没有变化，直接从缓存中读取结果。
+         4、在内部函数调用的时候不用加()。
+         5、必须用return返回
+         6、不要在computed 中对data中的数据进行赋值操作，这会形成一个死循环。
+         7、只能在组件内部或通过mixins对象定义
+         使用场景：
+         1、一个需要的结果受多个数据影响的时候，比如购物车结算金额(受到很多处的价格结算)。
+         2、操作某个属性，执行一些复杂的逻辑，并在多处使用这个结果。
+         3、内部函数中多处要使用到这个结果的。
+    filter：
+         1、有两种定义方式，一在组件内部通过filters属性定义；二在组件外部通过Vue.filter函数定义，必须放在Vue实例化前面
+			filters: {}  Vue.filter('hello', ()=> 'hello');
+         2、filter 无法缓存，调用频率高，因此特别适用于格式化输出场景，比如日期格式化
+         3、filter 具有组合调用能力，因此可以在项目架构层面定义一堆基础的、简单的filter，按需在组件内组合适用。
+v-for绑定key的原因：
+	1、key的作用主要是为了高效的更新虚拟DOM
+	2、需要使用key来给每个节点做一个唯一标识，Diff算法就可以正确的识别此节点，找到正确的位置区插入新的节点
+
+vue中template转成视图的过程
+	1.vue.js通过编译template模板转换成渲染函数，执行渲染函数就得到一个虚拟dom节点
+	2.在对model进行操作的时候，会触发dep中的render函数
+	
+虚拟DOM：
+	虚拟dom可以看做是一个使用JavaScript模拟了DOM结构的树形结构。
+	虚拟DOM的两个主要的核心函数，即h()函数和patch()函数，一阶段为虚拟dom的第一次渲染，
+	传递的两个参数分别是放真实DOM的container和生成的vnode，此时patch函数的作用是用来将初次生成的真实DOM结构挂载到指定的container上面。
+	第二阶段传递的两个参数分别为vnode和newVnode，此时patch函数的作用是使用diff算法对比两个参数的差异，进而更新参数变化的DOM节点；
+	可以发发现h函数和patch函数在cnabbdom中实现vdom到真实DOM的转化起到了至关重要的作用，那么还有一个很重要的环节，
+	patch函数中是怎么样实现对比两个vnode从而实现对真实DOM的更新的呢，这里还要提一下snabbdom的另外一个核心算法，即diff算法
+	如何比：
+		拿到新旧的对应节点，判断节点是否相同，如果相同实行递归，进行深度对比
+		如果不同则将旧的节点换成新的节点
+	h函数就是vue中的createElement方法，这个函数作用就是创建虚拟dom，追踪dom变化的。。。
+	
+	
+	Vue 通过建立一个虚拟 DOM 来追踪自己要如何改变真实 DOM
+    若一次操作中有10次更新DOM的动作，虚拟DOM不会立即操作DOM
+    而是将这10次更新的diff内容保存到本地一个JS对象中，最终将这个JS对象一次性attch到DOM树上，
+    再进行后续操作，避免大量无谓的更新 提高浏览
+    用JS对象模拟DOM节点的好处是，页面的更新可以先全部反映在JS对象(虚拟DOM)上，操作内存中的JS对象的速度显然要更快，
+    等更新完成后，再将最终的JS对象映射成真实的DOM，交由浏览器去绘制。
+	
+Diff算法
+    diff算法就是进行虚拟节点对比，并返回一个patch对象，
+    用来存储两个节点不同的地方，最后用patch记录的消息去局部更新Dom。
+    diff的过程就是调用名为patch的函数，比较新旧节点，一边比较一边给真实的DOM打补丁
+
+vue-router 全局导航守卫什么时候用？？？
+
+嵌套路由的写法：
+	routes: [
+		{
+			path: '/parent'
+			component: com,
+			children: {
+				{
+					path: 'children',
+					component: com
+				}
+			}
+		}
+	]
+
+父子组件传值：
+	父传子：props；
+	子传父：$emit();
+	父访问子 this.$children this.$refs.aaa ref="aaa"
+	子访问父 this.$parent
+	根组件 this.$root
+
+组件中data为什么是函数?
+	各组件中的data(){return} 有自己的作用域
+	
+什么是编译作用域?
+	父组件模板的所有东西都会在父级作用域内编译，子组件所有模板的东西都会在子级作用域内编译
+
+什么时候使用作用域插槽?
+	父组件需要使用子组件中的数据 （目的是获取子组件中的数据）
+	子组件上slot :user="数据" 
+    父组件上template v-slot:插槽名="slotProps"；slotProps.user获取
+v-slot 只能添加在 <template> 上 (只有一种例外情况)
+    当被提供的内容只有默认插槽时 组件的标签才可以被当作插槽的模板来使用，即独占默认插槽
+    这样我们就可以把 v-slot 直接用在组件上
+具名插槽缩写：#；和作用域插槽一起使用：你希望使用缩写的话，你必须始终以明确插槽名取而代之 #插槽名="{ user }"
+	
+vue-cli2和vue-cl3的区别：
+	1）vue-cli3是基于webpack4，而vue-cli2是基于webpack3
+	2）vue-cli3的设计是0配置，移除根目录下的build和config等目录
+	3）vue-cli3提供了vue ui命令，提供了可视化配置，更加人性化
+	4）vue-cli3移除了static文件夹，新增public文件夹，并且index.hmtl移到了public文件夹中
+
+vue-router导航守卫：
+		全局前置守卫：router.beforeEach((to, from, next) => {})；next方法必须要调用。next(false)中断当前的导航，如果浏览器的URL改变了，
+				那么url地址会重置到from路由对应的地址
+		全局后置钩子：router.afterEach((to, from) => {})
+
+keep-alive
+	keep-alive组件提供了include与exclude两个属性来允许组件有条件地进行缓存，二者都可以用逗号分隔字符串、正则表达式或一个数组来表示。
+	原理：？
+
+vue的响应式原理：
+	预备知识：
+		Object.defineProperty,这个方法就是在一个对象上定义一个新的属性，或者改变一个对象现有的属性，
+		并且返回这个对象。里面有两个字段 set,get。
+	观察者模式：
+		它分为注册环节跟发布环节。举例买蛋糕：买的时候店家没做好，就让我把电话留下来（注册），等做好后打电话告诉我（发布）
+	核心实现类:
+		Observer : 它的作用是给对象的属性添加 getter 和 setter，用于依赖收集和派发更新
+		Dep : 用于收集当前响应式对象的依赖关系,每个响应式对象包括子对象都拥有一个 Dep 实例
+			（里面 subs 是 Watcher 实例数组）,当数据有变更时,会通过 dep.notify()通知各个 watcher。
+		Watcher : 观察者对象 , 实例分为渲染 watcher (render watcher),计算属性 watcher (computed watcher),
+			侦听器 watcher（user watcher）三种
+	依赖收集:
+		initState 时,对 computed 属性初始化时,触发 computed watcher 依赖收集
+		initState 时,对侦听属性初始化时,触发 user watcher 依赖收集
+		render()的过程,触发 render watcher 依赖收集
+		re-render 时,vm.render()再次执行,会移除所有 subs 中的 watcer 的订阅,重新赋值。
+	原理：
+		当创建 Vue 实例时,vue 会遍历 data 选项的属性,利用 Object.defineProperty 为属性添加 getter 和 setter 
+		对数据的读取进行劫持（getter 用来依赖收集,setter 用来派发更新）,并且在内部追踪依赖,在属性被访问和修改时通知变化。
+		每个组件实例会有相应的 watcher 实例,会在组件渲染的过程中记录依赖的所有数据属性（进行依赖收集,
+		还有 computed watcher,user watcher 实例）,之后依赖项被改动时,setter 方法会通知依赖与此 data 
+		的 watcher 实例重新计算（派发更新）,从而使它关联的组件重新渲染。
+	派发更新
+		1.组件中对响应的数据进行了修改,触发 setter 的逻辑
+		2.调用 dep.notify()=>此方法是观察者类中的一个方法，用于更新数据，第三条就是这个方法中的
+		3.遍历所有的 subs（Watcher 实例）,调用每一个 watcher 的 update 方法。
+
+Vue的渲染过程？
+
+
+router模式的区别与原理：
+	hash 模式和 history 模式都属于浏览器自身的特性，Vue-Router 只是利用了这两个特性（通过调用浏览器提供的接口）来实现前端路由.
+	1. hash路由：监听 url 中 hash 的变化，然后渲染不同的内容，这种路由不向服务器发送请求，不需要服务端的支持；
+		它的特点在于：hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，因此改变 hash 不会重新加载页面。
+	2. history 路由：监听 url 中的路径变化，需要客户端和服务端共同的支持；
+		利用了 HTML5 History Interface 中新增的 pushState() 和 replaceState() 方法，这两个方法应用于浏览器的历史记录栈，
+		在当前已有的 back、forward、go 的基础之上，它们提供了对历史记录进行修改的功能。只是当它们执行修改时，虽然改变了当前的 URL，
+		但浏览器不会立即向后端发送请求。只修改路径，不刷新页面。
+		pushState有三个参数
+			参数1：state object pushState()方法创建的、与历史纪录相关的JS对象。状态对象可以是任何可以序列化的对象。640k个字符的大小限制
+			参数2：title 火狐浏览器现在已经忽略此参数，将来也许可能被使用。考虑到将来有可能的改变，传递一个空字符串是安全的做法。当然，你可以传递一个短标题给你要转变成的状态。（
+				   译者注：现在大多数浏览器不支持或者忽略这个参数，最好用null代替）
+			参数3：url
+	history.pushState() 相比于直接修改 hash,存在以下优势
+		1）pushState() 设置的新 URL 可以是与当前 URL 同源的任意 URL；而 hash 只可修改 # 后面的部分，因此只能设置与当前 URL 同文档的 URL；
+		2）pushState() 设置的新 URL 可以与当前 URL 一模一样，这样也会把记录添加到栈中；
+			而 hash 设置的新值必须与原来不一样才会触发动作将记录添加到栈中；
+		3）pushState() 通过 stateObject 参数可以添加任意类型的数据到记录中；而 hash 只可添加短字符串
+		4）pushState() 可额外设置 title 属性供后续使用
+	hash路由模式和history路由模式
+		1. hash路由模式是这样的：http://xxx.abc.com/#/xx。 有带#号，后面就是hash值的变化。
+			改变后面的hash值，它不会向服务器发出请求，因此也就不会刷新页面。
+			并且每次hash值发生改变的时候，会触发hashchange事件。因此我们可以通过监听该事件，来知道hash值发生了哪些变化
+			window.addEventListener('haschange', 监听函数)
+	
+		2. history模式：HTML5的History API为浏览器的全局history对象增加了该扩展方法。它是一个浏览器的一个接口，
+			在window对象中提供了onpopstate事件来监听历史栈的改变，只要历史栈有信息发生改变的话，就会触发该事件。提供了如下事件：
+
+ 
+ 
+vue中css只在当前页面起作用的原理：
+	scoped：
+		用途：防止全局同名CSS污染
+		原理：在标签加上data-v-something属性，再在选择器时加上对应[data-v-something]，即CSS带属性选择器，以此完成类似作用域的选择方式
+			一：scoped会在元素上添加唯一的属性（data-v-x形式），css编译后也会加上属性选择器，从而达到限制作用域的目的。
+				缺点：
+					1）由于只是通过属性限制，类还是原来的类，所以在其他地方对类设置样式还是可以造成污染。
+					2）添加了属性选择器，对于CSS选择器的权重加重了。
+					3）外层组件包裹子组件，会给子组件的根节点添加data属性。在外层组件中无法修改子组件中除了根节点以外的节点的样式
+		第二个原理：
+			给HTML的DOM节点加一个不重复属性data-v-469af010标志唯一性
+			在添加scoped属性的组件的每个样式选择器后添加一个等同与“不重复属性”相同的字段，实现类似于“作用域”的作用，不影响全局
+			如果组件内部还有组件，只会给最外层的组件里的标签加上唯一属性字段，不影响组件内部引用的组件（ 注意 ）
+	scoped慎用的原因：
+		1. 父组件无scoped属性，子组件带有scoped，父组件是无法操作子组件的样式的（原因在原理中可知），虽然我们可以在全局中通过
+			该类标签的标签选择器设置样式，但会影响到其他组件。更改可以使用样式穿透！ >>>或/deep/
+		2. 父组件有scoped属性，子组件无，父组件也无法设置子组件样式，因为父组件的所有标签都会带有data-v-469af010唯一标志，
+			但子组件不会带有这个唯一标志属性，与1同理，虽然我们可以在全局中通过该类标签的标签选择器设置样式，但会影响到其他组件
+		3. 父子组件都有，同理无法设置样式，更改起来增加代码量。
+		
+三方库样式覆盖：
+	1. stylus：样式穿透使用>>>
+		.wrapper >>> .swiper-pagination-bullet-active
+	2. sass和less的样式穿透
+		.外层 /deep/ .第三方组件{}
+		
+		
+表单为什么是箭头函数：？？
+
+
+
+vue如何跨域？
+	1. 利用：proxyTabl
+		vue-cli2：config文件夹下有index.js，里面有个dev（是一个对象）属性，在里面有proxyTabl属性
+			proxyTable: {
+				'/api': { ‘/api’意思是用什么代表后端地址，我猜的
+					target: '后端接口地址',
+					changeOrigin: true,//是否允许跨越
+					pathRewrite: {
+						'^/api': '/api',//重写,
+					}
+				}
+			},
+	2. 	nginx
+	
+	
+组件中name的作用：可以用来在keep-alive中exclued中用
+
+
+ Vuex相关：
+ store:{}                    this.$store.state.
+ mutations:{fn(state,参数)}  this.$store.commit("方法名"，参数)
+ getters:{fn(state,getters)} this.$store.getters.方法
+ actions:{fn(context,参数)}  this.$store.dispatch("方法"，参数)
+ modules:{a:moduleA}
+ ------------
+ import{mapState,mapGetters,mapMutations,...mapActions}from 'vuex'
+ computed:{
+     ...mapGetters(['cartList','cartCount']),
+     ...mapState(['count'])
+ }
+ methods:{...mapMutations([]),...mapActions([])}
+
+
+
+vuex刷新后数据丢失怎么办
+1.将vuex中的数据直接保存到浏览器缓存中（sessionStorage、localStorage、cookie）
+2.在页面刷新的时候再次请求远程数据，使之动态更新vuex数据
+（在app.vue这个入口文件中 保证每次刷新都可以触发）
+	export default {
+		name: 'App',
+		created () {
+			//在页面加载时读取sessionStorage里的状态信息
+			if (sessionStorage.getItem("store") ) {
+				this.$store.replaceState(Object.assign({}, this.$store.state,JSON.parse(sessionStorage.getItem("store"))))
+			} 
+
+			//在页面刷新时将vuex里的信息保存到sessionStorage里
+			window.addEventListener("beforeunload",()=>{
+				sessionStorage.setItem("store",JSON.stringify(this.$store.state))
+			})
+		}
+	}
+
+13.混入mixin */
+用来分发 Vue 组件中的可复用功能
+mixins 选项接收一个混入对象的数组 mixins:[]
+        // Mixin 钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。

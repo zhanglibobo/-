@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vue</title>
+</head>
+
+<body>
+  <!-- 
+    nextTict原理
+    vuex mutation action区别
+    keep-alive原理
+    provide inject
+    路由模式区别 history要后端配置代理转发
+    vue directives 自定义指令 
+    父子生命周期执行顺序 生命周期函数原理
+    params和?传参数的不同
+    import 和require引入方式的优缺点 import懒加载原理
+    Vue导入组件 异步导入原理
+    vue事件监听器原理（不同于浏览器的EventTarget API）
+    Vue.extend()
+    this.$data, this.$options
+    vuex中mutation为什么是同步的，能不能改成异步，如果可以为什么还要设计一个action，他们是如何实现的
+    vue是单页面应用，不利于seo，如果要利于seo，应该怎么做
+    手写vue双向绑定
+    watch不能深度监听，需要设置deep是怎么实现的
+    如何看待vue中所有的组件都是函数，所有的函数都是组件
+
+    dom是如何变为VirtualDom的（模板字符串变为虚拟dom）
+    Diff算法
+    MVVM双向绑定
+    VueRouter hash history区别 -->
+
+  <script>
+    /* new Vue做了什么  */
+    // 1. 处理组件配置项
+    //     初始化根组件时，进行了选项合并操作，将全局配置合并到根组件的局部配置上
+    //     初始化每个子组件时做了一些性能优化，将组件配置对象上的一些深层次属性放到vm.$options选项中，以提高代码的执行效率
+    // 2.初始化组件实例的关系属性，比如$parent、$children、$root、$refs等
+    // 3.处理自定义事件
+    //     3.2解析组件的插槽信息，得到vm.$slot，处理渲染函数，得到vm.$createElement 方法，即 h 函数
+    // 4.调用beforeCreate钩子函数
+    // 5.初始化组件的inject配置项
+    //     得到 result[key]=val 形式的配置对象，然后 对该配置对象进行浅层的响应式处理（只处理了对象的第一层数据），并代理每个key到vm实例上
+    // 6.数据响应式处理， 处理props、data、computed、methods、watch等选项
+    // 7.解析组件配置项上的provide对象，将其挂载到vm._provided属性上
+    // 8.调用created钩子函数
+    // 9.如果发现配置项上有el选项，则自动调用$mount方法，
+    //      也就是说有了el选项，就不需要再手动调用$mount方法，反之，没提供el选项则必须调用$mount方法
+    // 10.接下来则进入挂载阶段
+
+    // 一个组件的 data 选项必须是一个函数
+    // 因此每个实例可以维护一份被返回对象的独立的拷贝
+
+    // props $attrs
+    // 没有被定义的props会自动添加到组件的根元素上，
+    // 元素上绑定v - bind = ‘$attrs‘ 会将没有定义的props属性添加上去
+    // inheritAttrs: false 会去掉根元素上没有被定义的props
+
+    // props接收的参数都在$props里
+    // 没有用props接收的 在子组件最外层div上， 也在$attrs里
+    // inheritAttrs: false, 就不会继承父组件内容了， 同时也不在组件根元素上显示属性
+
+
+    /* Vue 响应式原理是怎么实现的？ */
+    // 1. 响应式核心是通过 Object.defineProperty拦截对数据的访问和设置
+    // 2. 响应式的数据分为两类
+    // 对象： 循环遍历对象的所有属性， 为每个属性设置getter和setter， 以达到拦截访问
+    // 和设置的目的， 如果属性值依旧为对象， 则递归为属性值上的每个key设置
+    // getter、 setter
+    // 访问数据时（ obj.key） 进行依赖收集， 在dep中存储相关的watcher
+    // 设置数据时， 由dep通知相关的watcher去更新
+    // 数组： 增强数组的那7个可以更改自身的原型方法， 然后拦截对这些方法的操作
+    // 添加新数据时进行响应式处理， 然后由dep通知watcher去更新
+    // 删除数据时， 也要由dep通知watcher更新
+
+    /* methods、 computed 和 watch 有什么区别？ */
+
+    // 使用场景：
+    // methods一般用于封装一些较为复杂的处理逻辑（ 同步、 异步）
+    // computed一般用于封装一些简单的同步逻辑， 将经过处理的数据返回， 然后显示在模板中， 以减轻模板的重量
+    // watch一般用于当需要在数据变化时执行异步或开销较大的操作
+    // methods、 computed
+    // 在一次渲染中， 由多个地方使用了同一个methods或computed属性， methods会被执行多次， 而computed的回调函数只会被执行一次（ computed为何是有缓存的）
+    // 通过源码我们知道， 在一次渲染中， 多次访问computedProperty， 只会在第一次执行computed属性的回调函数， 后续的其他访问， 则直接使用第一次的执行结果（ watcher
+    //   .value）， 而这一切的实现原理则是通过watcher.dirty属性的控制去实现的， 而methods， 每一次访问则是简单的方法调用this.xxmethods
+    // computed、 watch
+    // 通过源码我们知道， computed和watch的本质是一样的， 内部都是通过watcher来实现的， 1. 使用场景上的区别2.computed默认是懒执行的， 且不可更改
+    // methods、 watch
+    // methods和watch之间其实没什么可比的， 完全是两个东西， 不过在使用上可以把watch中一些逻辑抽到methods中， 以提高代码的可读性
+
+    /* Vue 的异步更新机制是如何实现的？  */
+    // Vue的异步更新机制的核心是 利用了浏览器的异步任务来实现的， 首选微任务队列， 宏任务队列次之
+    // 当响应式数据更新后， 会调用dep.notify方法， 通知dep中收集的watcher去执行update方法， watcher.update将watcher放入一个watcher队列（ 全局的queue数组）
+    // 然后通过nextTick方法将一个刷新watcher队列的方法（ flushSchedulerQueue） 放入一个全局的callbacks数组中
+    // 如果此时浏览器的异步任务队列中没有一个叫flushCallbacks的函数， 则执行timerFunc函数， 将flushCallback函数放入异步队列， 如果异步队列中已经存在flushCallbacks函数， 等待其执行完成以后再放入下一个flushCallbacks函数
+    // flushCallBacks函数负责执行callbacks数组中的所有flushSchedulerQueue函数
+    // flushSchedulerQueue函数负责刷新watcher队列， 即执行queue数组中每一个watcher的run方法， 从而进入更新阶段， 比如执行组件更新函数或者执行用户watch的回调函数
+
+    /* Vue 的 nextTick API 是如何实现的？ */
+    // Vue.nextTick或者vm.$nextTick的原理， 就做了两件事：
+    // 1、 将传递的回调函数用
+    // try
+    // catch 包裹然后放入callbacks数组
+    // 2、 执行timerFunc函数，在浏览器的异步任务队列放入一个刷新callbacks数组的函数
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>css</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: aqua;
+      margin-bottom: 10px;
+    }
+
+    .box1 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .box2 {
+      display: flex;
+    }
+
+    .box2 .item {
+      margin: auto;
+    }
+
+    .box3 {
+      position: relative;
+    }
+
+    .box3 .item {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .box4 {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .box5 {
+      position: relative;
+    }
+
+    .box5 .item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      width: 100px;
+      height: 100px;
+      background-color: brown;
+    }
+
+    .box6 {
+     text-align: center;
+    }
+    .box6::after{
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      width: 0;
+      height: 100%;
+    }
+    .box6 .item {
+      vertical-align: middle;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 水平垂直居中  -->
+  <!-- 1、flex -->
+  <div class="box box1">
+    <div class="item">item1</div>
+  </div>
+  <!-- 2、flex + margin -->
+  <div class="box box2">
+    <div class="item">item2</div>
+  </div>
+  <!-- 3、定位+transform -->
+  <div class="box box3">
+    <div class="item">item3</div>
+  </div>
+  <!-- 4、table-cell   margin失效了-->
+  <div class="box box4">
+    <div class="item">item4</div>
+  </div>
+  <!-- 5、父relative 子元素有宽高 -->
+  <div class="box box5">
+    <div class="item">item5</div>
+  </div>
+  <!-- 6、伪元素   display: inline-block; vertical-align: middle;-->
+  <div class="box box6">
+    <div class="item">item6</div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>上传、下载</title>
+</head>
+
+<body>
+  <script>
+    // Blob 对象表示一个不可变、 原始数据的类文件对象,它的数据可以按文本或二进制的格式进行读取，也可以转换成 ReadableStream 来用于数据操作
+    // FormData 接口提供了一种表示表单数据的键值对 key/value 的构造方式，并且可以轻松的将数据通过XMLHttpRequest.send() 方法发送出去
+    // for (var p of myFormData) FormData可以这样，普通对象不行
+  </script>
+  <script>
+    // 导入
+    // importAllExcel(examId, data) {
+    //   return axios(
+    //     {
+    //       url: `/paper/excel/area/${examId}`,
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'multipart/form-data' }, //是即将被发送的自定义请求头
+    //       data // 是作为请求主体被发送的数据
+    //     },
+    //     'analysis-admin'
+    //   );
+    // }
+    // 导出
+    // exportAllExcel(examId) {
+    //   return axios({
+    //       url: `/paper/excel/area/${examId}`,
+    //       method: 'GET',
+    //       responseType: 'blob' //表示服务器响应的数据类型
+    //       params: {} //是即将与请求一起发送的 URL 参数
+    //     },
+    //     'analysis-admin'
+    //   );
+    // }
+    // 导入
+    // <input
+    //   ref="fileRef"
+    //   @change="importAllExcel($event, '')"
+    //   type="file"
+    //   accept=".xls,.xlsx"
+    //   value=""
+    //   style="display:none"
+    // />
+    // importAllExcel(event) {
+    //   let {
+    //     files
+    //   } = event.target;
+    //   if (files.length === 0) return;
+    //   let file = files[0];
+    //   let formData = new FormData();
+    //   formData.append('file', file);
+    //   api
+    //     .importAllExcel(this.$route.query.id, formData)
+    //     .then(({
+    //       data
+    //     }) => {
+    //       event.target.value = '';
+    //       if (data.hasError) {
+    //         this.btnAllLoading2 = false;
+    //         return this.$message({
+    //           type: 'warning',
+    //           message: data.checkResult,
+    //           dangerouslyUseHTMLString: true
+    //         });
+    //       } else {
+    //         this.btnAllLoading2 = true;
+    //         this.buttonAllText = `数据检查中${data.progressRate}%`;
+    //       }
+    //     })
+    //     .catch(err => {
+    //       event.target.value = '';
+    //     });
+    // }
+    // 导出
+    // exportTemplate(res, fileName) {
+    //   let _this = this;
+    //   if (res.type === 'application/json') {
+    //     let reader = new FileReader();
+    //     reader.readAsText(res, 'utf-8');
+    //     reader.onload = function () {
+    //       let msg = JSON.parse(reader.result).msg || '下载失败';
+    //       _this.$message.warning(msg);
+    //     };
+    //     return;
+    //   }
+    //   const blob = new Blob([res], {
+    //     type: (res.type && res.type) || 'application/vnd.ms-excel'
+    //   });
+    //   let link = document.createElement('a');
+    //   link.href = URL.createObjectURL(blob);
+    //   link.setAttribute('download', fileName);
+    //   link.click();
+    //   link = null;
+    //   this.$message.success('下载成功');
+    // }
+  </script>
+</body>
+
+</html>

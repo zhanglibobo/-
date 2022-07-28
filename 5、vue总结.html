@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue总结面试题</title>
+</head>
+
+<body>
+    <script src="./day14/vue.js"></script>
+    <script>
+        /* vue注册组件 */
+        // 1、创建组件构造器对象 const cpn = Vue.extend({template:'<div></div>'})
+        // 2、注册成为组件 Vue.component('my-cpn',cpn)
+        // 3、使用组件 <my-cpn></my-cpn>
+        // 语法糖 Vue.component('my-cpn',{template:'<div></div>'})
+
+        /* 1. vue生命周期 */
+        // beforeCreate(初始化事件、生命周期之前即实例创建实例之前)
+        // created (请求数据 得到data；在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图)
+        // beforeMount：将编译完成的html挂载到对应的虚拟dom时触发，此时页面为空
+        // mounted (获取Dom)编译好的html挂载到页面完成后执行的事件， 不会保证所有的子组件也都一起被挂载 如果需要则 vm.$nextTick
+        // breforeUpdate updated (由于数据更改导致的虚拟 DOM 重新渲染和打补丁) 不会保证所有的子组件也都一起被重绘 如果需要则 vm.$nextTick()
+        // beforeDestroy destroyed 所有的子实例也都被销毁
+        // activated deactivated 被 keep-alive 缓存的组件激活时调用/被 keep-alive 缓存的组件停用时调用
+
+        // vue的生命周期：
+        //  1.beforeCreate：实例组件刚创建，元素DOM和数据都还没有初始化
+        //  2.created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图（在实例创建完成后被立即调用）
+        //  3.beforeMont:在挂载开始之前被调用：相关的 render 函数首次被调用。
+        //   在服务端渲染期间不被调用。将编译完成的html挂载到对应的虚拟dom时触发，此时页面为空
+        //  4.monted：实例被挂载后调用，不会保证所有的子组件也都一起被挂载，如果需要则 vm.$nextTick
+        //  5.breforeUpdate：数据更新时调用，发生在虚拟 DOM 打补丁之前。
+        //  6.updated当这个钩子被调用时，组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作，
+        //   如果要相应状态改变，通常最好使用计算属性或 watcher 取而代之， updated 不会保证所有的子组件也都一起被重绘
+        //  7.actived：被keep-alive缓存的组件激活时调用
+        //  8.deactived:被keep-alive缓存的组件停用时调用
+        //  9.beforeDestory：实例销毁之前调用。在这一步，实例仍然完全可用。
+        //  10.destoryed：实例销毁后调用。该钩子被调用后，对应 Vue 实例的所有指令都被解绑，所有的事件监听器被移除，所有的子实例也都被销毁。
+        //  11.errorCaptured:2.5.0新增。当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。
+        //   此钩子可以返回 false 以阻止该错误继续向上传播。
+
+        /* 2. vue updated和watch computed filter 区别*/
+        // updated:
+        // 触发条件：
+        // 1、 当data中定义的数据有变化时就会加载updated方法。
+        // 2、 任何数据的更新， 如果要做统一的业务逻辑处理
+        // 3、 在大多数情况下， 此期间避免更改状态， 因为这可能会导致更新无限循环。 该钩子在服务器端渲染期间不被调用。
+        // 特点：
+        // 1. 执行到它的时候时候是数据发生变化且界面更新完毕
+        // 2. 不能监听到路由数据(例如网址中的参数)
+        // 3. 所有的数据发生变化都会调用(消耗性能)
+        // 4. 只要数据发生变化， 每次触发的代码都是同一个
+        // watch ：
+        // 1、watch 函数是不需要调用的。
+        // 2、重点在于监控，监控数据发生变化的时候，执行回调函数操作。
+        // 3、当我们需要在数据变化时执行异步或开销较大的操作时，应该使用 watch
+        // 4、函数名就是你要监听的数据名字
+        // 5、监控一些input框值的特殊处理， 适合一个数据影响多个数据。
+        // 6、deep: true 该回调会在任何被侦听的对象的 property 改变时被调用，不论其被嵌套多深
+        // computed：
+        // 特点：
+        // 1、监控自己定义的变量，不用再data里面声明，函数名就是变量名
+        // 2、适合多个变量或对象进行处理后返回一个值(结果)。若这多个变量发生只要有一个发生变化，结果都会变化。
+        // 3、计算的结果具有缓存,依赖响应式属性变化，响应式属性没有变化，直接从缓存中读取结果。
+        // 4、在内部函数调用的时候不用加()。
+        // 5、必须用return返回
+        // 6、不要在computed 中对data中的数据进行赋值操作，这会形成一个死循环。
+        // 7、只能在组件内部或通过mixins对象定义
+        // 使用场景：
+        // 1、一个需要的结果受多个数据影响的时候，比如购物车结算金额(受到很多处的价格结算)。
+        // 2、操作某个属性，执行一些复杂的逻辑，并在多处使用这个结果。
+        // 3、内部函数中多处要使用到这个结果的。
+        // filter：
+        // 1、有两种定义方式，一在组件内部通过filters属性定义；二在组件外部通过Vue.filter函数定义，必须放在Vue实例化前面
+        // filters: {}  Vue.filter('hello', ()=> 'hello');
+        // 2、filter 无法缓存，调用频率高，因此特别适用于格式化输出场景，比如日期格式化
+        // 3、filter 具有组合调用能力，因此可以在项目架构层面定义一堆基础的、简单的filter，按需在组件内组合适用。
+
+        /* 3. v-for绑定key的原因 */
+        // 1、key的作用主要是为了高效的更新虚拟DOM
+        // 2、需要使用key来给每个节点做一个唯一标识，Diff算法就可以正确的识别此节点，找到正确的位置区插入新的节点
+
+        /* 4. 虚拟DOM */
+        // Vue 通过建立一个虚拟 DOM 来追踪自己要如何改变真实 DOM
+        // 若一次操作中有10次更新DOM的动作，虚拟DOM不会立即操作DOM
+        // 而是将这10次更新的diff内容保存到本地一个JS对象中，最终将这个JS对象一次性attch到DOM树上，
+        // 再进行后续操作，避免大量无谓的更新 提高浏览
+        // 用JS对象模拟DOM节点的好处是，页面的更新可以先全部反映在JS对象(虚拟DOM)上，操作内存中的JS对象的速度显然要更快，
+        // 等更新完成后，再将最终的JS对象映射成真实的DOM，交由浏览器去绘制。
+
+        /* 5. Diff算法 */
+        // diff算法就是进行虚拟节点对比，并返回一个patch对象，
+        // 用来存储两个节点不同的地方，最后用patch记录的消息去局部更新Dom。
+        // diff的过程就是调用名为patch的函数，比较新旧节点，一边比较一边给真实的DOM打补丁
+
+        /* 6.vue-router 全局导航守卫什么时候用*/
+        // 1.不设置 router-view 的 key 属性
+        // 由于 Vue 会复用相同组件, 即 /page/1 => /page/2 或者 /page?id=1 => /page?id=2 
+        // 这类链接跳转时, 将不在执行created, mounted之类的钩子,
+        // 这时候你需要在路由组件中, 添加beforeRouteUpdate钩子来执行相关方法拉去数据
+        // 2.使用导航守卫管理页面跳转以及同步前后端登录状态 router.beforeEach(监听跳转过程)
+        // 全局：router.beforeEach router.beforeResolve router.afterEach
+        // 路由独享守卫：beforeEnter
+        // 组件内的守卫 beforeRouteEnter beforeRouteUpdate beforeRouteLeave
+
+        /* 7. 嵌套路由的写法 */
+        // routes:[
+        //    {
+        //     path: '/category',
+        //     component: Category,
+        //     children: [{
+        //         path: 'profile',
+        //         component: UserProfile
+        //     },
+        //     {
+        //         path: 'posts',
+        //         component: UserPosts
+        //     }
+        //     ]
+        // }]
+
+        /* 8. 父子组件传值 */
+        // 父-->子 props属性
+        // 子-->父 this.$emit('事件名称')
+        // 父访问子 this.$children this.$refs.aaa ref="aaa"
+        // 子访问父 this.$parent
+        // 根组件 this.$root
+
+        /* 9. 非父子组件传值 */
+        // Vue.prototype.$bus = new Vue()
+        // this.$bus.$emit("事件名",参数)
+        // this.$bus.$on("事件名",方法)
+        // this.$bus.$off("事件名",方法)
+
+        /* 10. 组件中data为什么是函数 */
+        // 各组件中的data(){return} 有自己的作用域
+
+        // 什么是编译作用域 
+        // 父组件模板的所有东西都会在父级作用域内编译，子组件所有模板的东西都会在子级作用域内编译
+
+        /* 11. 什么时候使用作用域插槽 */
+        // 父组件需要使用子组件中的数据 （目的是获取子组件中的数据）
+        // 用法：
+        // 子组件上slot :user="数据" 
+        // 父组件上template v-slot:插槽名="slotProps"；slotProps.user获取
+
+        // v-slot 只能添加在 <template> 上 (只有一种例外情况)
+        // 当被提供的内容只有默认插槽时 组件的标签才可以被当作插槽的模板来使用，
+        // 这样我们就可以把 v-slot 直接用在组件上
+
+
+
+        /* 13.混入mixin */
+        // 用来分发 Vue 组件中的可复用功能
+        // mixins 选项接收一个混入对象的数组 mixins:[]
+        // Mixin 钩子按照传入顺序依次调用，并在调用组件自身的钩子之前被调用。
+
+        /* 14.keep-alive */
+        // <keep-alive> 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。
+        // 是一个抽象组件：它自身不会渲染一个 DOM 元素，也不会出现在父组件链中。
+        // 将需要缓存VNode节点保存在this.catch中，在render时如果VNode的name符合在缓存条件
+        // （可以用include和exclude控制）则会从this.catch中取出之前缓存的VNode实例进行渲染
+    </script>
+</body>
+
+</html>

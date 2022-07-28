@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>笔记</title>
+</head>
+
+<body>
+
+  <!-- workers只能主线程更新界面（若不是，主线程更新p标签，分线程删除则不行，因为分线程看不到window）
+  settineout100毫秒，后面的代码执行需要200毫秒，则定时器输出结果需200毫秒
+  先执行初始化代码再执行回调函数（定时器 ajax 事件监听） -->
+
+  <!-- 函数传参（对象类型时）是把实参浅拷贝给形参 -->
+
+  <!-- js执行调用函数时，是值传递，不是引用传递 -->
+
+  <!-- 执行上下文栈（压栈） -->
+
+  <!-- 常见的闭包 1、函数作为外部函数返回值 2、函数作为另一个函数实参 -->
+
+  <!-- 没有被引用的对象成为垃圾对象会自动释放 -->
+
+  <!-- js引擎执行主线程 定时器是浏览器执行的在分线程 -->
+
+  <!-- tsc 文件名 转js
+  npm init -y 产生package.json文件
+  tsc --init 产生tsconfig文件
+  terser压缩 -->
+  <!-- 函数的用法多 叫做重载 比如h()函数 -->
+</body>
+<script>
+  // 启动一个node服务
+  // 1、 npm init - y
+  // 2、 npm i express - s
+  // const express = require('express');
+  // const app = express();
+  // app.use(express.static('./dist'))
+  // app.listen(80,()=>{
+  //   console.log('server')
+  // })
+
+  // npm i compression -s
+  // compression = require('compression')
+  // app.use(compression())
+
+  // pm2 
+  // npm i pm2 -g
+  // npm start app.js --name 自定义名称
+  // pm2 ls 查看项目
+
+</script>
+
+</html>

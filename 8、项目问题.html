@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>项目问题</title>
+</head>
+<body>
+  <h1>一.前端优化网站性能</h1>
+  <div>
+    1.减少请求数量
+    1.1图片处理
+        1-1Base64：
+          将图片的内容以base64格式内嵌到html中，可以减少http请求数量，但是编码之后的大小比图片大了
+        1-2 使用字体图标来代替图片
+    1.2 避免使用空的src和href
+    1.3 不使用css@import（这样做会导致css无法并行下载，
+        因为使用@import引用的文件只有在引用它的那个css文件被下载、解析之后，
+        浏览器才会知道还有另外一个css需要加载，这时才去下载，下载后才开始解析、构建render tree等一系列操作
+        因此css#@import引起的css解析延迟会加长耶main留白期，所以尽量避免使用css@import的方式引入，尽量使用link标签的方式引入）
+  </div>
+  <div>
+    2.减少资源大小
+    2.1 html压缩
+        html代码压缩就是压缩在文本文件中有意义，但是在html中不显示的字符，包括空格、制表符
+    2.2 css压缩
+        css压缩包括无效代码删除与css语义合并
+    2.3 js压缩与混乱
+        js压缩与混乱包括无效字符及注释的删除、代码语义的缩减和优化、降低代码的可读性，实现代码的保护
+    2.4 图片压缩
+  </div>
+  <div>
+    3. 优化网络连接
+    3.1 使用 CDN
+    CDN是内容分发网络，它能够实时地根据网络流量和各个节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上，
+    其目的是使用户可以就近的取得所需的内容，解决网络拥挤的状况，提高网站的响应速度
+    3.2 使用 DNS 预解析
+  </div>
+  <div>
+    4.优化资源加载
+    4.1资源加载位置
+       通过优化资源加载位置，更改资源加载时机，使尽可能快地展示出页面内容，尽可能快地使功能可用
+       1.css文件放在head中，先外链，后本页
+       2.js文件放在body底部，先外链，后本页
+       3.处理页面、处理页面布局的js放在head中，如 babel-polyfill.js文件、flexible.js文件
+       4.body中尽量不写style标签和script标签
+
+  </div>
+</body>
+</html>
