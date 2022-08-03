@@ -292,6 +292,8 @@
 
 
     /** ---------------class extends super*/
+    // new调用 就调用了constructor(){}方法
+    // extend继承 子类constructor(){} 覆盖了父类的constructor(){} 方法，父类不执行，所以要在子类中调用super()方法 super指父类
     // class shouji {
     //   //静态属性/方法 Array.from() Math.random()，类的专属属性和方法，和实例无关
     //   static name = '手机'
