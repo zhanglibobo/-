@@ -794,6 +794,42 @@
     // var c = fun(0).fun(1); // undefined
     // c.fun(2);
     // c.fun(3); 
+    // --------------
+    new Promise((resolve, reject) => {
+      console.log(7)
+      resolve()
+    }).then(() => {
+      console.log(8)
+    })
+    async function f() {
+      console.log('async')
+      await new Promise((resolve, reject) => {
+        console.log(1111);
+        resolve(11111)
+      }).then((val) => {
+        console.log(val)
+      })
+    }
+    f();
+    console.log(222);
+    // -----------
+    setTimeout(() => {
+      console.log(1)
+    }, 3000)
+    setTimeout(() => {
+      console.log(2)
+    }, 2000)
+    const p = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(1)
+      }, 3000)
+      setTimeout(() => {
+        console.log(2)
+      }, 2000)
+    })
+    p.then((val) => {
+      console.log(val)
+    })
   </script>
 </body>
 
