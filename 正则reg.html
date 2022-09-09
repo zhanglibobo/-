@@ -79,6 +79,8 @@
     console.log(str.match(/\d/g)); //match加g 能够寻找到所有匹配的字符
     console.log(/^\d/.test('abc'));
     console.log(/^\d/.test('77hhabc'));
+    console.log(/^\d/.exec('77hhabc'));
+    console.log(/\d+(?=啦)/.exec('aaa89898哈哈000啦啦'));
 
     console.log('34[abc]'.match(/^(\d+)\[/), '捕获作用'); //返回数组，捕获的项在下标为1的项上
   </script>
