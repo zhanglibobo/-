@@ -94,6 +94,14 @@
     // 外网访问外网的情况（正常情况）
     // 1.输入www.baidu.com 由ip找到对应ng服务
     // (先从host文件中查找 配置域名映射的ip地址， 找不到的话在走host解析或DNS解析)
+
+    //   http: { server : {
+    //      listen /端口/
+    //      server_name /ip/
+    //      location /监控路径/ {proxy_pass : 有斜杠不加监控路径，无斜杠加监控路径 }
+    //      root /跟目录/
+    // },upstream:{负载均衡}}
+
     // 2.在ng配置path:/exam-analysis-front/  upstream:10.10.30.5:17234
     // 3.匹配到/exam-analysis-front/ 转发到10.10.30.5:17234这台服务器
     // --------------Nginx作用
